@@ -20,6 +20,7 @@
 @property(weak, nonatomic) IBOutlet UIImageView *passwordIndicator;
 @property(weak, nonatomic) IBOutlet UIButton *createAccountButton;
 @property(weak, nonatomic) IBOutlet UITextView *textView;
+@property(strong,nonatomic)UIActivityIndicatorView *activityIndicatorView;
 
 
 @end
@@ -97,6 +98,21 @@
     RAC(self.createAccountButton.enabled) = [RACAbleWithStart(command, canExecute) deliverOn:[RACScheduler mainThreadScheduler]];
     ///Here we bind the textView's text property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattening is the same as merging, so we get one signal that represents the value of all of the signals. Note again the delivery on the main thread.
     RAC(self.textView.text) = [[commandSignalMapped flatten]deliverOn:[RACScheduler mainThreadScheduler]];
+    ///The activityIndicator will be spin while the command is being executed.
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:self.activityIndicatorView];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    space.width = 20; //make the activity spinner offset from the edge of the nav bar
+    self.activityIndicatorView.color = [UIColor blackColor];
+    self.navigationItem.rightBarButtonItems = @[space, item];
+    ///Since we cannot set the activityIndicators animating property directly, we have to invoke its methods as side effects.
+    RACSignal *commandSignal = [RACAble(command, executing) deliverOn:[RACScheduler mainThreadScheduler]];
+    [commandSignal subscribeNext:^(NSNumber *x) {
+        if(x.boolValue)
+            [self.activityIndicatorView startAnimating];
+        else
+            [self.activityIndicatorView stopAnimating];
+    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
