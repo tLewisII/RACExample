@@ -23,7 +23,7 @@
     [super viewDidLoad];
     self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    self.sections = @[@"Gestures", @"Text Fields"];
+    self.sections = @[@"Gestures", @"Text Fields", @"Slideshow"];
     CellConfigureBlock block = ^(UITableViewCell *cell, NSString *item, id indexPath) {
         cell.textLabel.text = item;
     };

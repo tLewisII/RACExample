@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A3A8E0343E5B40D2A6ECA1E0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B205D9F76C54EED83B92297 /* libPods.a */; };
+		DB3169F61794A5C900BAEDCB /* RACSlideshowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3169F51794A5C900BAEDCB /* RACSlideshowViewController.m */; };
 		DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C31793575E00DC0101 /* UIKit.framework */; };
 		DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C51793575E00DC0101 /* Foundation.framework */; };
 		DBBA69C81793575E00DC0101 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C71793575E00DC0101 /* CoreGraphics.framework */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		1ED7C6B2106F4D80868A1E06 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		5B205D9F76C54EED83B92297 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB3169F41794A5C900BAEDCB /* RACSlideshowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACSlideshowViewController.h; sourceTree = "<group>"; };
+		DB3169F51794A5C900BAEDCB /* RACSlideshowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACSlideshowViewController.m; sourceTree = "<group>"; };
 		DBBA69C01793575E00DC0101 /* RACExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RACExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBBA69C31793575E00DC0101 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DBBA69C51793575E00DC0101 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -77,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB3169F71794A5D000BAEDCB /* Slideshow */ = {
+			isa = PBXGroup;
+			children = (
+				DB3169F41794A5C900BAEDCB /* RACSlideshowViewController.h */,
+				DB3169F51794A5C900BAEDCB /* RACSlideshowViewController.m */,
+			);
+			name = Slideshow;
+			sourceTree = "<group>";
+		};
 		DBBA69B71793575E00DC0101 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +122,7 @@
 		DBBA69C91793575E00DC0101 /* RACExample */ = {
 			isa = PBXGroup;
 			children = (
+				DB3169F71794A5D000BAEDCB /* Slideshow */,
 				DBBA69F1179376DB00DC0101 /* App Delegate and Storyboard */,
 				DBBA69E91793647D00DC0101 /* Gestures */,
 				DBBA69F0179376B700DC0101 /* Text Fields */,
@@ -304,6 +317,7 @@
 				DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */,
 				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
 				DBBA69F61793856B00DC0101 /* RACTextFieldViewController.m in Sources */,
+				DB3169F61794A5C900BAEDCB /* RACSlideshowViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

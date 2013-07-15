@@ -17,6 +17,7 @@
                     <connections>
                         <segue destination="d6U-vj-1DJ" kind="push" identifier="Gestures" id="DaG-NB-BfP"/>
                         <segue destination="XLl-eH-SmF" kind="push" identifier="Text Fields" id="gVM-OU-RVz"/>
+                        <segue destination="bhb-nt-ymV" kind="push" identifier="Slideshow" id="JpU-gP-EOf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -169,6 +170,30 @@
             </objects>
             <point key="canvasLocation" x="1043" y="97"/>
         </scene>
+        <!--Slideshow View Controller-->
+        <scene sceneID="cxF-fG-RIL">
+            <objects>
+                <viewController id="bhb-nt-ymV" customClass="RACSlideshowViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hhK-EK-uf5">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="XAA-cU-eZZ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="UTd-Au-dAn"/>
+                    <connections>
+                        <outlet property="imageView" destination="XAA-cU-eZZ" id="KSW-nq-sRQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c4x-tv-3fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1043" y="778"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Q4f-ub-hyg">
             <objects>
@@ -188,32 +213,6 @@
             <point key="canvasLocation" x="44" y="92"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="RACGestureViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RACGestureViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="pinchLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="stateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="translationLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="RACTextFieldViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RACTextFieldViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="createAccountButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="emailIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="nameField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="nameIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="TLViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TLViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

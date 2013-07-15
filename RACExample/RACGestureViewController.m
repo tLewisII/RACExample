@@ -39,10 +39,13 @@
     RACSignal *panGestureString = [panGestureSignal map:^id(NSValue *value) {
         return [NSString stringWithFormat:@"Y Translation = %f", value.CGPointValue.y];
     }];
-    ///We also want real time information about the state of the gesture, so we transform that into a String as well.
+    ///We also want real time information about the state of the gesture, so we transform that into a String as well. You have to move very slowly if you want to see the label update when the Gesture begins.
     RACSignal *panGestureState = [panGesture.rac_gestureSignal map:^id(UIPanGestureRecognizer *recognizer) {
         NSString *state;
         switch(recognizer.state) {
+                case UIGestureRecognizerStateBegan:
+                state = @"Began";
+                break;
             case UIGestureRecognizerStateChanged:
                 state = @"Gesture is Changed";
                 break;
