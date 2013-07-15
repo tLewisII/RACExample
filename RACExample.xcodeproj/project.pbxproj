@@ -21,7 +21,11 @@
 		DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69DF1793575E00DC0101 /* TLViewController.m */; };
 		DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69E71793647000DC0101 /* RACGestureViewController.m */; };
 		DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69EB1793658C00DC0101 /* TLDataSource.m */; };
-		DBBA69EF179376B300DC0101 /* RACTextFields.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69EE179376B300DC0101 /* RACTextFields.m */; };
+		DBBA69F61793856B00DC0101 /* RACTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69F51793856B00DC0101 /* RACTextFieldViewController.m */; };
+		DBBA69FB17938BEA00DC0101 /* GreenStar.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69F717938BEA00DC0101 /* GreenStar.png */; };
+		DBBA69FC17938BEA00DC0101 /* GreenStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69F817938BEA00DC0101 /* GreenStar@2x.png */; };
+		DBBA69FD17938BEA00DC0101 /* RedStar.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69F917938BEA00DC0101 /* RedStar.png */; };
+		DBBA69FE17938BEA00DC0101 /* RedStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69FA17938BEA00DC0101 /* RedStar@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +51,12 @@
 		DBBA69E71793647000DC0101 /* RACGestureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACGestureViewController.m; sourceTree = "<group>"; };
 		DBBA69EA1793658C00DC0101 /* TLDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLDataSource.h; sourceTree = "<group>"; };
 		DBBA69EB1793658C00DC0101 /* TLDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLDataSource.m; sourceTree = "<group>"; };
-		DBBA69ED179376B300DC0101 /* RACTextFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACTextFields.h; sourceTree = "<group>"; };
-		DBBA69EE179376B300DC0101 /* RACTextFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACTextFields.m; sourceTree = "<group>"; };
+		DBBA69F41793856B00DC0101 /* RACTextFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACTextFieldViewController.h; sourceTree = "<group>"; };
+		DBBA69F51793856B00DC0101 /* RACTextFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACTextFieldViewController.m; sourceTree = "<group>"; };
+		DBBA69F717938BEA00DC0101 /* GreenStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenStar.png; sourceTree = "<group>"; };
+		DBBA69F817938BEA00DC0101 /* GreenStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenStar@2x.png"; sourceTree = "<group>"; };
+		DBBA69F917938BEA00DC0101 /* RedStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedStar.png; sourceTree = "<group>"; };
+		DBBA69FA17938BEA00DC0101 /* RedStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RedStar@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +111,7 @@
 				DBBA69F0179376B700DC0101 /* Text Fields */,
 				DBBA69F2179376EE00DC0101 /* Root ViewController */,
 				DBBA69F31793770000DC0101 /* Other Source Files */,
+				DBBA69FF17938BF200DC0101 /* Resources */,
 				DBBA69CA1793575E00DC0101 /* Supporting Files */,
 			);
 			path = RACExample;
@@ -134,8 +143,8 @@
 		DBBA69F0179376B700DC0101 /* Text Fields */ = {
 			isa = PBXGroup;
 			children = (
-				DBBA69ED179376B300DC0101 /* RACTextFields.h */,
-				DBBA69EE179376B300DC0101 /* RACTextFields.m */,
+				DBBA69F41793856B00DC0101 /* RACTextFieldViewController.h */,
+				DBBA69F51793856B00DC0101 /* RACTextFieldViewController.m */,
 			);
 			name = "Text Fields";
 			sourceTree = "<group>";
@@ -166,6 +175,17 @@
 				DBBA69EB1793658C00DC0101 /* TLDataSource.m */,
 			);
 			name = "Other Source Files";
+			sourceTree = "<group>";
+		};
+		DBBA69FF17938BF200DC0101 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69F717938BEA00DC0101 /* GreenStar.png */,
+				DBBA69F817938BEA00DC0101 /* GreenStar@2x.png */,
+				DBBA69F917938BEA00DC0101 /* RedStar.png */,
+				DBBA69FA17938BEA00DC0101 /* RedStar@2x.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +247,10 @@
 				DBBA69D81793575E00DC0101 /* Default@2x.png in Resources */,
 				DBBA69DA1793575E00DC0101 /* Default-568h@2x.png in Resources */,
 				DBBA69DD1793575E00DC0101 /* MainStoryboard.storyboard in Resources */,
+				DBBA69FB17938BEA00DC0101 /* GreenStar.png in Resources */,
+				DBBA69FC17938BEA00DC0101 /* GreenStar@2x.png in Resources */,
+				DBBA69FD17938BEA00DC0101 /* RedStar.png in Resources */,
+				DBBA69FE17938BEA00DC0101 /* RedStar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +299,7 @@
 				DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */,
 				DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */,
 				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
-				DBBA69EF179376B300DC0101 /* RACTextFields.m in Sources */,
+				DBBA69F61793856B00DC0101 /* RACTextFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

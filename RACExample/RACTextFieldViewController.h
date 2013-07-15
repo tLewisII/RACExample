@@ -1,5 +1,5 @@
 //
-//  RACTextFields.h
+//  RACTextFieldViewController.h
 //  RACExample
 //
 //  Created by Terry Lewis II on 7/14/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RACTextFields : UIViewController
+@interface RACTextFieldViewController : UIViewController
 
 @end
