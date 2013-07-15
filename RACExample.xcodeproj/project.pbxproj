@@ -26,6 +26,7 @@
 		DBBA69FC17938BEA00DC0101 /* GreenStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69F817938BEA00DC0101 /* GreenStar@2x.png */; };
 		DBBA69FD17938BEA00DC0101 /* RedStar.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69F917938BEA00DC0101 /* RedStar.png */; };
 		DBBA69FE17938BEA00DC0101 /* RedStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69FA17938BEA00DC0101 /* RedStar@2x.png */; };
+		DBBA6A011793B59600DC0101 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA6A001793B59600DC0101 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		DBBA69F817938BEA00DC0101 /* GreenStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenStar@2x.png"; sourceTree = "<group>"; };
 		DBBA69F917938BEA00DC0101 /* RedStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedStar.png; sourceTree = "<group>"; };
 		DBBA69FA17938BEA00DC0101 /* RedStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RedStar@2x.png"; sourceTree = "<group>"; };
+		DBBA6A001793B59600DC0101 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBBA6A011793B59600DC0101 /* QuartzCore.framework in Frameworks */,
 				DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */,
 				DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */,
 				DBBA69C81793575E00DC0101 /* CoreGraphics.framework in Frameworks */,
@@ -95,6 +98,7 @@
 		DBBA69C21793575E00DC0101 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBBA6A001793B59600DC0101 /* QuartzCore.framework */,
 				DBBA69C31793575E00DC0101 /* UIKit.framework */,
 				DBBA69C51793575E00DC0101 /* Foundation.framework */,
 				DBBA69C71793575E00DC0101 /* CoreGraphics.framework */,

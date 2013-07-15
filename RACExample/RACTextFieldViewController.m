@@ -31,6 +31,7 @@
     self.nameField.delegate = self;
     self.emailField.delegate = self;
     self.passwordField.delegate = self;
+    
     ///We want to constantly monitor the correctness of the text fields so that we can update the indicators in real time. These are arbitrary values used for correctness, you could use whatever you desired.
     RACSignal *nameSignal = [self.nameField.rac_textSignal map:^id(NSString *value) {
         return @(value.length > 4);
@@ -94,7 +95,7 @@
     }];
     ///We don't want the button to be pressed while the command is executing, so we set its enabledness based on the command's canExecute property. Note that we deliver it on the main thread, since we are binding to a UIKit property.
     RAC(self.createAccountButton.enabled) = [RACAbleWithStart(command, canExecute) deliverOn:[RACScheduler mainThreadScheduler]];
-    ///Here we bind the textView's text property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattens the signals into one signal with the combined values of all the signals. Note again the delivery on the main thread.
+    ///Here we bind the textView's text property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattening is the same as merging, so we get one signal that represents the value of all of the signals. Note again the delivery on the main thread.
     RAC(self.textView.text) = [[commandSignalMapped flatten]deliverOn:[RACScheduler mainThreadScheduler]];
 }
 

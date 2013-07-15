@@ -7,11 +7,13 @@
 //
 
 #import "RACGestureViewController.h"
+#import <QuartzCore/QuartzCore.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-
+#import <EXTScope.h>
 @interface RACGestureViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *translationLabel;
 @property(weak, nonatomic) IBOutlet UILabel *stateLabel;
+@property(strong,nonatomic)RACSubject *animationDelegate;
 
 @end
 
@@ -67,6 +69,47 @@
     RAC(self.stateLabel.text) = panGestureState;
     ///The color will be updated each time the signal returns a value.
     RAC(self.view.backgroundColor) = colorSignal;
+    
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]init];
+    [self.view addGestureRecognizer:pinchGesture];
+    ///We simply send the value as a transform.
+    RACSignal *pinchSignal = [pinchGesture.rac_gestureSignal map:^id(UIPinchGestureRecognizer *value) {
+        return [NSValue valueWithCATransform3D:CATransform3DMakeScale(value.scale, value.scale, 1.0)];
+    }];
+    @weakify(self) //We need to weaken self in order to not retain it when it is used in the upcoming blocks.
+    ///We want to animate the view back to its original position after the gesture completes, so we filter and then return an animation object.
+    RACSignal *originalTransform = [[pinchGesture.rac_gestureSignal filter:^BOOL(UIPinchGestureRecognizer *value) {
+        return (value.state == UIGestureRecognizerStateEnded);
+    }]map:^id(id value) {
+        @strongify(self)
+        CABasicAnimation *resetTransform = [CABasicAnimation animationWithKeyPath:@"transform"];
+        [resetTransform setToValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+        resetTransform.delegate = self;
+        resetTransform.fillMode = kCAFillModeForwards;
+        resetTransform.duration = .227;
+        resetTransform.removedOnCompletion = NO;
+        return resetTransform;
+    }];
+    ///Adds the animation to the layer each time the gesture ends.
+    [self.view.layer rac_liftSelector:@selector(addAnimation:forKey:) withObjects:originalTransform, @"transform"];
+    ///Used to bring the animation delegate into the RAC world.
+    self.animationDelegate = [RACSubject subject];
+    ///When the signal sends a YES value, return the identity transform.
+    RACSignal *resetSignal = [[self.animationDelegate filter:^BOOL(NSNumber *value) {
+        return (value.boolValue == YES);
+    }]map:^id(id value) {
+        return [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    }];
+    RAC(self.view.layer.transform) = [RACSignal merge:@[pinchSignal,resetSignal]];
+    ///This side effect needs to be performed each time the signal sends a value.
+    [resetSignal subscribeNext:^(id x) {
+        @strongify(self);
+        [self.view.layer removeAllAnimations];
+    }];
+    
+}
+-(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    [self.animationDelegate sendNext:@(flag)];
 }
 
 
