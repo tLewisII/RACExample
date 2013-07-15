@@ -14,6 +14,7 @@
 @property(weak, nonatomic) IBOutlet UILabel *translationLabel;
 @property(weak, nonatomic) IBOutlet UILabel *stateLabel;
 @property(strong,nonatomic)RACSubject *animationDelegate;
+@property (weak, nonatomic) IBOutlet UILabel *pinchLabel;
 
 @end
 
@@ -28,7 +29,7 @@
     ///The value we really care about is the translation value, so that is what we return.
     RACSignal *panGestureSignal = [panGesture.rac_gestureSignal map:^id(UIPanGestureRecognizer *recognizer) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
-        NSInteger yBoundary = MIN(recognizer.view.center.y + translation.y, originalCenter.y - 50);
+        NSInteger yBoundary = MIN(recognizer.view.center.y + translation.y, originalCenter.y - self.navigationController.navigationBar.frame.size.height);
         [recognizer setTranslation:CGPointZero inView:self.view];
         return [NSValue valueWithCGPoint:CGPointMake(recognizer.view.center.x, yBoundary)];
     }];
@@ -75,6 +76,10 @@
     ///We simply send the value as a transform.
     RACSignal *pinchSignal = [pinchGesture.rac_gestureSignal map:^id(UIPinchGestureRecognizer *value) {
         return [NSValue valueWithCATransform3D:CATransform3DMakeScale(value.scale, value.scale, 1.0)];
+    }];
+    ///Show the velocity and scale of the pinch gesture.
+    RAC(self.pinchLabel.text) = [pinchGesture.rac_gestureSignal map:^id(UIPinchGestureRecognizer *value) {
+        return [NSString stringWithFormat:@"Scale %f velocity %f",value.scale,value.velocity];
     }];
     @weakify(self) //We need to weaken self in order to not retain it when it is used in the upcoming blocks.
     ///We want to animate the view back to its original position after the gesture completes, so we filter and then return an animation object.
