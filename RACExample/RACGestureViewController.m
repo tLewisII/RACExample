@@ -8,19 +8,19 @@
 
 #import "RACGestureViewController.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface RACGestureViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *translationLabel;
-@property (weak, nonatomic) IBOutlet UILabel *stateLabel;
+@property(weak, nonatomic) IBOutlet UILabel *translationLabel;
+@property(weak, nonatomic) IBOutlet UILabel *stateLabel;
 
 @end
 
 @implementation RACGestureViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
+
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
     [self.view addGestureRecognizer:panGesture];
     CGPoint originalCenter = self.view.center;
     ///The value we really care about is the translation value, so that is what we return.
@@ -39,11 +39,11 @@
     ///We also want real time information about the state of the gesture, so we transform that into a String as well.
     RACSignal *panGestureState = [panGesture.rac_gestureSignal map:^id(UIPanGestureRecognizer *recognizer) {
         NSString *state;
-        switch (recognizer.state) {
-                case UIGestureRecognizerStateChanged:
+        switch(recognizer.state) {
+            case UIGestureRecognizerStateChanged:
                 state = @"Gesture is Changed";
                 break;
-                case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateEnded:
                 state = @"Gesture is Ended";
                 break;
             default:
@@ -56,11 +56,11 @@
     ///Here we filter the values, and only return a color from our dictionary when the state is one of the ones we care about.
     RACSignal *colorSignal = [[panGesture.rac_gestureSignal filter:^BOOL(UIPanGestureRecognizer *recognizer) {
         return (recognizer.state == UIGestureRecognizerStateChanged || recognizer.state == UIGestureRecognizerStateEnded);
-    }] map:^id(UIPanGestureRecognizer *recognizer) {
+    }]map:^id(UIPanGestureRecognizer *recognizer) {
         return colors[@(recognizer.state)];
     }];
     ///We want the starting point displayed when the view loads.
-    NSString *initialPoint = [NSString stringWithFormat:@"Y Translation = %f",originalCenter.y];
+    NSString *initialPoint = [NSString stringWithFormat:@"Y Translation = %f", originalCenter.y];
     ///+[RACSignal merge] takes an array of signals and returns a value each time one of the signals fires. Here the initialPoint immediatly returns, thus the label is set when the view loads. Then afterwards, the panGestureSignal will be sending its values when it is activated.
     RAC(self.translationLabel.text) = [RACSignal merge:@[panGestureString, [RACSignal return:initialPoint]]];
     ///The label will always reflect the current state of the recognizer.

@@ -9,11 +9,12 @@
 #import "TLViewController.h"
 #import "TLDataSource.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface TLViewController () <UITableViewDelegate>
-@property(strong,nonatomic)UITableView *tableView;
-@property(strong,nonatomic)TLDataSource *datasource;
-@property(strong,nonatomic)RACSubject *delegateSubject;
-@property(strong,nonatomic)NSArray *sections;
+@property(strong, nonatomic) UITableView *tableView;
+@property(strong, nonatomic) TLDataSource *datasource;
+@property(strong, nonatomic) RACSubject *delegateSubject;
+@property(strong, nonatomic) NSArray *sections;
 @end
 
 @implementation TLViewController
@@ -33,15 +34,16 @@
     ///ReactiveCocoa
     self.delegateSubject = [RACSubject subject]; ///RACSubjects are useful for bridging the gap between the normal world of Objective-C and ReactiveCocoa.
     ///We lift the selector into the RAC world, and it will be invoked every time the delegate subject sends a new value.
-    [self rac_liftSelector:@selector(performSegueWithIdentifier:sender:) withObjects:self.delegateSubject,nil];
+    [self rac_liftSelector:@selector(performSegueWithIdentifier:sender:) withObjects:self.delegateSubject, nil];
 }
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *item = self.sections[(NSUInteger)indexPath.row];
     ///We want the item from the array to perform the segue with.
     [self.delegateSubject sendNext:item];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UIViewController *controller = segue.destinationViewController;
     controller.title = segue.identifier;
 }

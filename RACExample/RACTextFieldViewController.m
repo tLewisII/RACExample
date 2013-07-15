@@ -7,25 +7,26 @@
 //
 #define GreenStar [UIImage imageNamed:@"GreenStar"]
 #define RedStar [UIImage imageNamed:@"RedStar"]
+
 #import "RACTextFieldViewController.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface RACTextFieldViewController () <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *nameField;
-@property (weak, nonatomic) IBOutlet UITextField *emailField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UITextView *descriptionField;
-@property (weak, nonatomic) IBOutlet UIImageView *nameIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView *emailIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView *passwordIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
+@property(weak, nonatomic) IBOutlet UITextField *nameField;
+@property(weak, nonatomic) IBOutlet UITextField *emailField;
+@property(weak, nonatomic) IBOutlet UITextField *passwordField;
+@property(weak, nonatomic) IBOutlet UIImageView *nameIndicator;
+@property(weak, nonatomic) IBOutlet UIImageView *emailIndicator;
+@property(weak, nonatomic) IBOutlet UIImageView *passwordIndicator;
+@property(weak, nonatomic) IBOutlet UIButton *createAccountButton;
+@property(weak, nonatomic) IBOutlet UITextView *textView;
 
 
 @end
 
 @implementation RACTextFieldViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.nameField.delegate = self;
     self.emailField.delegate = self;
@@ -60,11 +61,44 @@
             return RedStar;
     }];
     ///Only enable the create account button when each field is filled out correctly.
-    RAC(self.createAccountButton.enabled) = [RACSignal combineLatest:@[nameSignal,emailSignal,passwordSignal] reduce:^(NSNumber *name, NSNumber *email, NSNumber *password)  {
+    RACSignal *correctnessSignal = [RACSignal combineLatest:@[nameSignal, emailSignal, passwordSignal] reduce:^(NSNumber *name, NSNumber *email, NSNumber *password) {
         return @((name.boolValue && email.boolValue && password.boolValue));
     }];
+    ///A RACCommand is used for buttons in place of adding target actions. In this case, we only want the command to be able to execute if the correctnessSignal returns true.
+    RACCommand *command = [RACCommand commandWithCanExecuteSignal:correctnessSignal];
+    ///Here we return a signal block that execute a network request on a background thread. If the success parameter is set = NO, then the error will be sent.
+    RACSignal *comnandSignal = [command addSignalBlock:^RACSignal *(id value) {
+        return [RACSignal start:^id(BOOL *success, NSError *__autoreleasing *error) {
+            NSURL *url = [[NSURL alloc]initWithString:@"http://www.apple.com"];
+            NSString *string = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
+            *success = (string != nil);
+            return string;
+        }];
+    }];
+    ///Here we catch the error and suppress it, otherwise the signal would complete and the textViews text would never be able to receive a value.
+    RACSignal *commandSignalMapped = [comnandSignal map:^id(RACSignal *request) {
+        return [request catch:^RACSignal *(NSError *error) {
+            ///handle the error;
+            NSLog(@"The error is %@", error);
+            return [RACSignal empty];
+        }];
+    }];
+    ///We set the command to be executed whenever the button is pressed.
+    RACSignal *buttonSignal = [self.createAccountButton rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [buttonSignal executeCommand:command];
+    ///Hide the keyboard whenever the button is pressed. This would be considered a side effect.
+    [buttonSignal subscribeNext:^(id x) {
+        [self.nameField resignFirstResponder];
+        [self.emailField resignFirstResponder];
+        [self.passwordField resignFirstResponder];
+    }];
+    ///We don't want the button to be pressed while the command is executing, so we set its enabledness based on the command's canExecute property. Note that we deliver it on the main thread, since we are binding to a UIKit property.
+    RAC(self.createAccountButton.enabled) = [RACAbleWithStart(command, canExecute) deliverOn:[RACScheduler mainThreadScheduler]];
+    ///Here we bind the textView's text property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattens the signals into one signal with the combined values of all the signals. Note again the delivery on the main thread.
+    RAC(self.textView.text) = [[commandSignalMapped flatten]deliverOn:[RACScheduler mainThreadScheduler]];
 }
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
 }
