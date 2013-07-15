@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A3A8E0343E5B40D2A6ECA1E0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B205D9F76C54EED83B92297 /* libPods.a */; };
 		DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C31793575E00DC0101 /* UIKit.framework */; };
 		DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C51793575E00DC0101 /* Foundation.framework */; };
 		DBBA69C81793575E00DC0101 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C71793575E00DC0101 /* CoreGraphics.framework */; };
@@ -18,9 +19,14 @@
 		DBBA69DA1793575E00DC0101 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69D91793575E00DC0101 /* Default-568h@2x.png */; };
 		DBBA69DD1793575E00DC0101 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBBA69DB1793575E00DC0101 /* MainStoryboard.storyboard */; };
 		DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69DF1793575E00DC0101 /* TLViewController.m */; };
+		DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69E71793647000DC0101 /* RACGestureViewController.m */; };
+		DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69EB1793658C00DC0101 /* TLDataSource.m */; };
+		DBBA69EF179376B300DC0101 /* RACTextFields.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA69EE179376B300DC0101 /* RACTextFields.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1ED7C6B2106F4D80868A1E06 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		5B205D9F76C54EED83B92297 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBBA69C01793575E00DC0101 /* RACExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RACExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBBA69C31793575E00DC0101 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DBBA69C51793575E00DC0101 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -37,6 +43,12 @@
 		DBBA69DC1793575E00DC0101 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		DBBA69DE1793575E00DC0101 /* TLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLViewController.h; sourceTree = "<group>"; };
 		DBBA69DF1793575E00DC0101 /* TLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLViewController.m; sourceTree = "<group>"; };
+		DBBA69E61793647000DC0101 /* RACGestureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACGestureViewController.h; sourceTree = "<group>"; };
+		DBBA69E71793647000DC0101 /* RACGestureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACGestureViewController.m; sourceTree = "<group>"; };
+		DBBA69EA1793658C00DC0101 /* TLDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLDataSource.h; sourceTree = "<group>"; };
+		DBBA69EB1793658C00DC0101 /* TLDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLDataSource.m; sourceTree = "<group>"; };
+		DBBA69ED179376B300DC0101 /* RACTextFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACTextFields.h; sourceTree = "<group>"; };
+		DBBA69EE179376B300DC0101 /* RACTextFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACTextFields.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +59,7 @@
 				DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */,
 				DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */,
 				DBBA69C81793575E00DC0101 /* CoreGraphics.framework in Frameworks */,
+				A3A8E0343E5B40D2A6ECA1E0 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +72,7 @@
 				DBBA69C91793575E00DC0101 /* RACExample */,
 				DBBA69C21793575E00DC0101 /* Frameworks */,
 				DBBA69C11793575E00DC0101 /* Products */,
+				1ED7C6B2106F4D80868A1E06 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,6 +90,7 @@
 				DBBA69C31793575E00DC0101 /* UIKit.framework */,
 				DBBA69C51793575E00DC0101 /* Foundation.framework */,
 				DBBA69C71793575E00DC0101 /* CoreGraphics.framework */,
+				5B205D9F76C54EED83B92297 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -83,11 +98,11 @@
 		DBBA69C91793575E00DC0101 /* RACExample */ = {
 			isa = PBXGroup;
 			children = (
-				DBBA69D21793575E00DC0101 /* TLAppDelegate.h */,
-				DBBA69D31793575E00DC0101 /* TLAppDelegate.m */,
-				DBBA69DB1793575E00DC0101 /* MainStoryboard.storyboard */,
-				DBBA69DE1793575E00DC0101 /* TLViewController.h */,
-				DBBA69DF1793575E00DC0101 /* TLViewController.m */,
+				DBBA69F1179376DB00DC0101 /* App Delegate and Storyboard */,
+				DBBA69E91793647D00DC0101 /* Gestures */,
+				DBBA69F0179376B700DC0101 /* Text Fields */,
+				DBBA69F2179376EE00DC0101 /* Root ViewController */,
+				DBBA69F31793770000DC0101 /* Other Source Files */,
 				DBBA69CA1793575E00DC0101 /* Supporting Files */,
 			);
 			path = RACExample;
@@ -107,6 +122,52 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		DBBA69E91793647D00DC0101 /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69E61793647000DC0101 /* RACGestureViewController.h */,
+				DBBA69E71793647000DC0101 /* RACGestureViewController.m */,
+			);
+			name = Gestures;
+			sourceTree = "<group>";
+		};
+		DBBA69F0179376B700DC0101 /* Text Fields */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69ED179376B300DC0101 /* RACTextFields.h */,
+				DBBA69EE179376B300DC0101 /* RACTextFields.m */,
+			);
+			name = "Text Fields";
+			sourceTree = "<group>";
+		};
+		DBBA69F1179376DB00DC0101 /* App Delegate and Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69D21793575E00DC0101 /* TLAppDelegate.h */,
+				DBBA69D31793575E00DC0101 /* TLAppDelegate.m */,
+				DBBA69DB1793575E00DC0101 /* MainStoryboard.storyboard */,
+			);
+			name = "App Delegate and Storyboard";
+			sourceTree = "<group>";
+		};
+		DBBA69F2179376EE00DC0101 /* Root ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69DE1793575E00DC0101 /* TLViewController.h */,
+				DBBA69DF1793575E00DC0101 /* TLViewController.m */,
+			);
+			name = "Root ViewController";
+			sourceTree = "<group>";
+		};
+		DBBA69F31793770000DC0101 /* Other Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA69EA1793658C00DC0101 /* TLDataSource.h */,
+				DBBA69EB1793658C00DC0101 /* TLDataSource.m */,
+			);
+			name = "Other Source Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -114,9 +175,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBBA69E31793575E00DC0101 /* Build configuration list for PBXNativeTarget "RACExample" */;
 			buildPhases = (
+				B8F29D8E410F41C193B8DCD6 /* Check Pods Manifest.lock */,
 				DBBA69BC1793575E00DC0101 /* Sources */,
 				DBBA69BD1793575E00DC0101 /* Frameworks */,
 				DBBA69BE1793575E00DC0101 /* Resources */,
+				FCC2EF3476C54256B4E4DA05 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -169,6 +232,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B8F29D8E410F41C193B8DCD6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FCC2EF3476C54256B4E4DA05 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DBBA69BC1793575E00DC0101 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -177,6 +273,9 @@
 				DBBA69D01793575E00DC0101 /* main.m in Sources */,
 				DBBA69D41793575E00DC0101 /* TLAppDelegate.m in Sources */,
 				DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */,
+				DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */,
+				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
+				DBBA69EF179376B300DC0101 /* RACTextFields.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +359,7 @@
 		};
 		DBBA69E41793575E00DC0101 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1ED7C6B2106F4D80868A1E06 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RACExample/RACExample-Prefix.pch";
@@ -271,6 +371,7 @@
 		};
 		DBBA69E51793575E00DC0101 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1ED7C6B2106F4D80868A1E06 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RACExample/RACExample-Prefix.pch";
@@ -299,6 +400,7 @@
 				DBBA69E51793575E00DC0101 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
