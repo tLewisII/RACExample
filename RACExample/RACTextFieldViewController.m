@@ -19,8 +19,8 @@
 @property(weak, nonatomic) IBOutlet UIImageView *emailIndicator;
 @property(weak, nonatomic) IBOutlet UIImageView *passwordIndicator;
 @property(weak, nonatomic) IBOutlet UIButton *createAccountButton;
-@property(weak, nonatomic) IBOutlet UITextView *textView;
 @property(strong,nonatomic)UIActivityIndicatorView *activityIndicatorView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 
 @end
@@ -71,10 +71,9 @@
     ///Here we return a signal block that execute a network request on a background thread. If the success parameter is set = NO, then the error will be sent.
     RACSignal *comnandSignal = [command addSignalBlock:^RACSignal *(id value) {
         return [RACSignal start:^id(BOOL *success, NSError *__autoreleasing *error) {
-            NSURL *url = [[NSURL alloc]initWithString:@"http://www.apple.com"];
-            NSString *string = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
-            *success = (string != nil);
-            return string;
+           NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://farm9.staticflickr.com/8109/8631724728_48c13f7733_b.jpg"]];
+            *success = (data != nil);
+            return [UIImage imageWithData:data];
         }];
     }];
     ///Here we catch the error and suppress it, otherwise the signal would complete and the textViews text would never be able to receive a value.
@@ -96,8 +95,8 @@
     }];
     ///We don't want the button to be pressed while the command is executing, so we set its enabledness based on the command's canExecute property. Note that we deliver it on the main thread, since we are binding to a UIKit property.
     RAC(self.createAccountButton.enabled) = [RACAbleWithStart(command, canExecute) deliverOn:[RACScheduler mainThreadScheduler]];
-    ///Here we bind the textView's text property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattening is the same as merging, so we get one signal that represents the value of all of the signals. Note again the delivery on the main thread.
-    RAC(self.textView.text) = [[commandSignalMapped flatten]deliverOn:[RACScheduler mainThreadScheduler]];
+    ///Here we bind the imageView's image property to the signal sent from the command. We flatten it because the commandSignalMapped is a signal of signals, and flattening is the same as merging, so we get one signal that represents the value of all of the signals. Note again the delivery on the main thread.
+    RAC(self.imageView.image) = [[commandSignalMapped flatten]deliverOn:[RACScheduler mainThreadScheduler]];
     ///The activityIndicator will be spin while the command is being executed.
     self.activityIndicatorView = [[UIActivityIndicatorView alloc]init];
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:self.activityIndicatorView];

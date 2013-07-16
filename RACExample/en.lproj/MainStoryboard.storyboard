@@ -98,14 +98,10 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="UX4-EU-Rwa">
-                                <rect key="frame" x="20" y="188" width="280" height="296"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="exD-aD-XYo">
+                                <rect key="frame" x="0.0" y="185" width="320" height="319"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -114,11 +110,11 @@
                         <outlet property="createAccountButton" destination="VRP-eg-McT" id="b0V-XB-90Q"/>
                         <outlet property="emailField" destination="73v-dv-OE9" id="2U8-cm-TKJ"/>
                         <outlet property="emailIndicator" destination="Ki3-cp-g2M" id="1W9-qa-DYF"/>
+                        <outlet property="imageView" destination="exD-aD-XYo" id="tKp-2M-afj"/>
                         <outlet property="nameField" destination="VkV-R7-cRg" id="lNm-Tf-xqW"/>
                         <outlet property="nameIndicator" destination="xxA-Up-ZEs" id="3fI-oN-caI"/>
                         <outlet property="passwordField" destination="dLD-2v-b8Z" id="wqt-0x-6Yh"/>
                         <outlet property="passwordIndicator" destination="Dfi-BM-yFr" id="Yvh-rP-aVI"/>
-                        <outlet property="textView" destination="UX4-EU-Rwa" id="KJ8-Od-cfs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RaN-a5-Uwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
