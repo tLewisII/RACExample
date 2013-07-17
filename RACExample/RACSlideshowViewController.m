@@ -8,6 +8,7 @@
 
 #import "RACSlideshowViewController.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <EXTScope.h>
 @interface RACSlideshowViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
@@ -47,8 +48,10 @@
     RACSignal *images = [[[RACSignal merge:@[firstSignalMapped,secondSignal,thirdSignal,fourthSignal]]deliverOn:[RACScheduler mainThreadScheduler]]replay];
     
     RAC(self.imageView.image) = images;
+    @weakify(self)
     ///When the signal completes we want to gather all of the images into an array and start the slideshow over again.
     RAC(self.imageView.animationImages) = [images.collect doCompleted:^{
+        @strongify(self)
         [[UIApplication sharedApplication]setNetworkActivityIndicatorVisible:NO];
         self.imageView.animationDuration = 4;
         [self.imageView performSelector:@selector(startAnimating) withObject:nil afterDelay:1.5];

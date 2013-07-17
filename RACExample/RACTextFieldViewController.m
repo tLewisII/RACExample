@@ -10,6 +10,7 @@
 
 #import "RACTextFieldViewController.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <EXTScope.h>
 
 @interface RACTextFieldViewController () <UITextFieldDelegate>
 @property(weak, nonatomic) IBOutlet UITextField *nameField;
@@ -87,8 +88,10 @@
     ///We set the command to be executed whenever the button is pressed.
     RACSignal *buttonSignal = [self.createAccountButton rac_signalForControlEvents:UIControlEventTouchUpInside];
     [buttonSignal executeCommand:command];
+    @weakify(self);
     ///Hide the keyboard whenever the button is pressed. This would be considered a side effect.
     [buttonSignal subscribeNext:^(id x) {
+        @strongify(self)
         [self.nameField resignFirstResponder];
         [self.emailField resignFirstResponder];
         [self.passwordField resignFirstResponder];
@@ -107,6 +110,7 @@
     ///Since we cannot set the activityIndicators animating property directly, we have to invoke its methods as side effects.
     RACSignal *commandSignal = [RACAble(command, executing) deliverOn:[RACScheduler mainThreadScheduler]];
     [commandSignal subscribeNext:^(NSNumber *x) {
+        @strongify(self)
         if(x.boolValue)
             [self.activityIndicatorView startAnimating];
         else
