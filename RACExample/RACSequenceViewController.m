@@ -23,13 +23,15 @@
     self.stringLabel.text = @"";
     @weakify(self)
     ///Here we can easily change the case of a string, as each `next` event will be each value from the sequence in order. So we simply map and return the switched case string.
-    RAC(self.stringLabel.text) = [[@"StRiNgS".rac_sequence.signal map:^id(NSString *value) {
-        @strongify(self)
+    [[[@"StRiNgS".rac_sequence.signal map:^id(NSString *value) {
         if([value isEqualToString:value.uppercaseString])
-            return [self.stringLabel.text stringByAppendingString:value.lowercaseString];
+            return value.lowercaseString;
         else
-            return [self.stringLabel.text stringByAppendingString:value.uppercaseString];
-    }]deliverOn:[RACScheduler scheduler]];
+            return value.uppercaseString;
+    }]deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSString *x) {
+        @strongify(self)
+        self.stringLabel.text = [self.stringLabel.text stringByAppendingString:x];
+    }];
     ///Returns a Boolean indicating if any value in the sequence passes the test.
     BOOL anyTest = [@[@1,@2,@3].rac_sequence any:^BOOL(NSNumber *value) {
         return (value.integerValue % 2 == 0);
