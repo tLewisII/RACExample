@@ -46,22 +46,16 @@
     }];
     ///We want to indicate to the user exactly when each field goes from incorrect to correct, or vice-versa;
     RAC(self.nameIndicator.image) = [nameSignal map:^id(NSNumber *value) {
-        if(value.boolValue)
-            return GreenStar;
-        else
-            return RedStar;
+        if(value.boolValue) return GreenStar;
+        else return RedStar;
     }];
     RAC(self.emailIndicator.image) = [emailSignal map:^id(NSNumber *value) {
-        if(value.boolValue)
-            return GreenStar;
-        else
-            return RedStar;
+        if(value.boolValue) return GreenStar;
+        else return RedStar;
     }];
     RAC(self.passwordIndicator.image) = [passwordSignal map:^id(NSNumber *value) {
-        if(value.boolValue)
-            return GreenStar;
-        else
-            return RedStar;
+        if(value.boolValue) return GreenStar;
+        else return RedStar;
     }];
     ///Only enable the create account button when each field is filled out correctly.
     RACSignal *correctnessSignal = [RACSignal combineLatest:@[nameSignal, emailSignal, passwordSignal] reduce:^(NSNumber *name, NSNumber *email, NSNumber *password) {
@@ -111,10 +105,8 @@
     RACSignal *commandSignal = [RACAble(command, executing) deliverOn:[RACScheduler mainThreadScheduler]];
     [commandSignal subscribeNext:^(NSNumber *x) {
         @strongify(self)
-        if(x.boolValue)
-            [self.activityIndicatorView startAnimating];
-        else
-            [self.activityIndicatorView stopAnimating];
+        if(x.boolValue) [self.activityIndicatorView startAnimating];
+        else [self.activityIndicatorView stopAnimating];
     }];
 }
 
