@@ -34,7 +34,7 @@
         return [NSValue valueWithCGPoint:CGPointMake(recognizer.view.center.x, yBoundary)];
     }];
     ///We bind the center of the view to the values that are sent from the signal.
-    RAC(self.view.center) = panGestureSignal;
+    RAC(self.view,center) = panGestureSignal;
     ///We want to keep track of the y value of the translation and display it in real time to the user, so we transform the value into a String and return that.
     RACSignal *panGestureString = [panGestureSignal map:^id(NSValue *value) {
         return [NSString stringWithFormat:@"Y Translation = %f", value.CGPointValue.y];
@@ -68,11 +68,11 @@
     ///We want the starting point displayed when the view loads.
     NSString *initialPoint = [NSString stringWithFormat:@"Y Translation = %f", originalCenter.y];
     ///+[RACSignal merge] takes an array of signals and returns a value each time one of the signals fires. Here the initialPoint immediatly returns, thus the label is set when the view loads. Then afterwards, the panGestureSignal will be sending its values when it is activated.
-    RAC(self.translationLabel.text) = [RACSignal merge:@[panGestureString, [RACSignal return:initialPoint]]];
+    RAC(self.translationLabel,text) = [RACSignal merge:@[panGestureString, [RACSignal return:initialPoint]]];
     ///The label will always reflect the current state of the recognizer.
-    RAC(self.stateLabel.text) = panGestureState;
+    RAC(self.stateLabel,text) = panGestureState;
     ///The color will be updated each time the signal returns a value.
-    RAC(self.view.backgroundColor) = colorSignal;
+    RAC(self.view,backgroundColor) = colorSignal;
     
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]init];
     [self.view addGestureRecognizer:pinchGesture];
@@ -81,7 +81,7 @@
         return [NSValue valueWithCATransform3D:CATransform3DMakeScale(value.scale, value.scale, 1.0)];
     }];
     ///Show the velocity and scale of the pinch gesture.
-    RAC(self.pinchLabel.text) = [pinchGesture.rac_gestureSignal map:^id(UIPinchGestureRecognizer *value) {
+    RAC(self.pinchLabel,text) = [pinchGesture.rac_gestureSignal map:^id(UIPinchGestureRecognizer *value) {
         return [NSString stringWithFormat:@"Scale %f velocity %f",value.scale,value.velocity];
     }];
     @weakify(self) //We need to weaken self in order to not retain it when it is used in the upcoming blocks.
@@ -99,7 +99,7 @@
         return resetTransform;
     }];
     ///Adds the animation to the layer each time the gesture ends.
-    [self.view.layer rac_liftSelector:@selector(addAnimation:forKey:) withObjects:originalTransform, @"transform"];
+    [self.view.layer rac_liftSelector:@selector(addAnimation:forKey:) withSignals:originalTransform, [RACSignal return:@"transform"],nil];
     ///Used to bring the animation delegate into the RAC world.
     self.animationDelegate = [RACSubject subject];
     ///When the signal sends a YES value, return the identity transform.
@@ -108,7 +108,7 @@
     }]map:^id(id value) {
         return [NSValue valueWithCATransform3D:CATransform3DIdentity];
     }];
-    RAC(self.view.layer.transform) = [RACSignal merge:@[pinchSignal,resetSignal]];
+    RAC(self.view.layer,transform) = [RACSignal merge:@[pinchSignal,resetSignal]];
     ///This side effect needs to be performed each time the signal sends a value.
     [resetSignal subscribeNext:^(id x) {
         @strongify(self);

@@ -41,10 +41,10 @@
         return (value.integerValue > 4);
     }];
     ///Simply display the results of the above tests.
-    RAC(self.anyLabel.text) = [[RACSignal return:@(anyTest)] map:^id(NSNumber *value) {
+    RAC(self.anyLabel,text) = [[RACSignal return:@(anyTest)] map:^id(NSNumber *value) {
         return (value.boolValue == YES ? @"YES" : @"NO");
     }];
-    RAC(self.allLabel.text) = [[RACSignal return:@(allTest)] map:^id(NSNumber *value) {
+    RAC(self.allLabel,text) = [[RACSignal return:@(allTest)] map:^id(NSNumber *value) {
         return (value.boolValue == YES ? @"YES" : @"NO");
     }];
 }

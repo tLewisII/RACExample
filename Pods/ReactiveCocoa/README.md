@@ -8,61 +8,56 @@ If you're already familiar with functional reactive programming or know the basi
 premise of ReactiveCocoa, check out the [Documentation][] folder for a framework
 overview and more in-depth information about how it all works in practice.
 
-**Table of Contents**
+## New to ReactiveCocoa?
 
- 1. [Functional reactive programming](#functional-reactive-programming)
- 1. [FRP with ReactiveCocoa](#frp-with-reactivecocoa)
+ReactiveCocoa is documented like crazy, and there's a wealth of introductory
+material available to explain what RAC is and how you can use it.
+
+If you want to learn more, we recommend these resources, roughly in order:
+
+ 1. [Introduction](#introduction)
  1. [When to use ReactiveCocoa](#when-to-use-reactivecocoa)
- 1. [Importing ReactiveCocoa](#importing-reactivecocoa)
- 1. [More Info](#more-info)
+ 1. [Framework Overview][]
+ 1. [Basic Operators][]
+ 1. [Header documentation](ReactiveCocoaFramework/ReactiveCocoa)
+ 1. Previously answered [Stack Overflow](https://github.com/ReactiveCocoa/ReactiveCocoa/wiki)
+    questions and [GitHub issues](https://github.com/ReactiveCocoa/ReactiveCocoa/issues?labels=question&state=closed)
+ 1. The rest of the [Documentation][] folder
 
-## Functional reactive programming
+## Introduction
 
-Functional Reactive Programming (FRP) is a programming paradigm for writing
-software that reacts to change.
+ReactiveCocoa is an implementation of [functional reactive
+programming](http://blog.maybeapps.com/post/42894317939/input-and-output).
+Rather than using mutable variables which are replaced and modified in-place,
+RAC provides signals (represented by `RACSignal`) that capture present and
+future values.
 
-FRP is built on the abstraction of values over time. Rather than capturing
-a value at a particular time, FRP provides signals that capture the past,
-present, and future value. These signals can be reasoned about, chained,
-composed, and reacted to.
+By chaining, combining, and reacting to signals, software can be written
+declaratively, without the need for code that continually observes and updates
+values.
 
-By combining signals, software can be written declaratively, without the need
-for code that continually observes and updates values. A text field can be
-directly set to always show the current timestamp, for example, instead of using
-additional code that watches the clock and updates the text field every second.
+For example, a text field can be bound to the latest time, even as it changes,
+instead of using additional code that watches the clock and updates the
+text field every second.  It works much like KVO, but with blocks instead of
+overriding `-observeValueForKeyPath:ofObject:change:context:`.
 
 Signals can also represent asynchronous operations, much like [futures and
 promises][]. This greatly simplifies asynchronous software, including networking
 code.
 
-One of the major advantages of FRP is that it provides a single, unified
-approach to dealing with different types of reactive, asynchronous behaviors.
-
-Here are some resources for learning more about FRP:
-
-* [What is FRP? - Elm Language](http://elm-lang.org/learn/What-is-FRP.elm)
-* [What is Functional Reactive Programming - Stack Overflow](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming/1030631#1030631)
-
-[Josh Abernathy](https://github.com/joshaber) also has [a blog post about FRP](http://blog.maybeapps.com/post/42894317939/input-and-output).
-
-## FRP with ReactiveCocoa
-
-Signals in ReactiveCocoa (RAC) are represented using `RACSignal`. Signals are
-streams of values that can be observed and transformed.
-
-Applications that are built with RAC use signals to propagate changes. It works
-much like KVO, but with blocks instead of overriding
-`-observeValueForKeyPath:ofObject:change:context:`.
+One of the major advantages of RAC is that it provides a single, unified
+approach to dealing with asynchronous behaviors, including delegate methods,
+callback blocks, target-action mechanisms, notifications, and KVO.
 
 Here's a simple example:
 
 ```objc
 // When self.username changes, log the new name to the console.
 //
-// RACAble(self.username) creates a new RACSignal that sends a new value
-// whenever the username changes. -subscribeNext: will execute the block
-// whenever the signal sends a value.
-[RACAble(self.username) subscribeNext:^(NSString *newName) {
+// RACObserve(self, username) creates a new RACSignal that sends the current
+// value of self.username, then the new value whenever it changes.
+// -subscribeNext: will execute the block whenever the signal sends a value.
+[RACObserve(self, username) subscribeNext:^(NSString *newName) {
     NSLog(@"%@", newName);
 }];
 ```
@@ -74,7 +69,7 @@ But unlike KVO notifications, signals can be chained together and operated on:
 //
 // -filter returns a new RACSignal that only sends a new value when its block
 // returns YES.
-[[RACAble(self.username)
+[[RACObserve(self, username)
    filter:^(NSString *newName) {
        return [newName hasPrefix:@"j"];
    }]
@@ -83,10 +78,9 @@ But unlike KVO notifications, signals can be chained together and operated on:
    }];
 ```
 
-Signals can also be used to derive state, which is a key component of FRP.
-Instead of observing properties and setting other properties in response to the
-new values, RAC makes it possible to express properties in terms of signals and
-operations:
+Signals can also be used to derive state. Instead of observing properties and
+setting other properties in response to the new values, RAC makes it possible to
+express properties in terms of signals and operations:
 
 ```objc
 // Create a one-way binding so that self.createEnabled will be
@@ -98,8 +92,8 @@ operations:
 // +combineLatest:reduce: takes an array of signals, executes the block with the
 // latest value from each signal whenever any of them changes, and returns a new
 // RACSignal that sends the return value of that block as values.
-RAC(self.createEnabled) = [RACSignal 
-    combineLatest:@[ RACAble(self.password), RACAble(self.passwordConfirmation) ] 
+RAC(self, createEnabled) = [RACSignal 
+    combineLatest:@[ RACObserve(self, password), RACObserve(self, passwordConfirmation) ] 
     reduce:^(NSString *password, NSString *passwordConfirm) {
         return @([passwordConfirm isEqualToString:password]);
     }];
@@ -111,14 +105,16 @@ example, they can also represent button presses:
 ```objc
 // Log a message whenever the button is pressed.
 //
-// RACCommand is a RACSignal subclass that represents UI actions.
+// RACCommand creates signals to represent UI actions. Each signal can
+// represent a button press, for example, and have additional work associated
+// with it.
 //
 // -rac_command is an addition to NSButton. The button will send itself on that
 // command whenever it's pressed.
-self.button.rac_command = [RACCommand command];
-[self.button.rac_command subscribeNext:^(id _) {
+self.button.rac_command = [[RACCommand alloc] initWithSignalBlock:^(id _) {
     NSLog(@"button was pressed!");
-}];
+    return [RACSignal empty];
+}]
 ```
 
 Or asynchronous network operations:
@@ -126,22 +122,18 @@ Or asynchronous network operations:
 ```objc
 // Hook up a "Log in" button to log in over the network.
 //
-// loginCommand sends a value whenever it is executed.
-self.loginCommand = [RACCommand command];
-
-// This block will execute whenever the login command sends a value, starting
+// This block will be run whenever the login command is executed, starting
 // the login process.
-//
-// -addSignalBlock: will return a signal that includes the signals returned from
-// this block, one for each time the command is executed.
-self.loginSignals = [self.loginCommand addSignalBlock:^(id sender) {
+self.loginCommand = [[RACCommand alloc] initWithSignalBlock:^(id sender) {
     // The hypothetical -logIn method returns a signal that sends a value when
     // the network request finishes.
     return [client logIn];
 }];
 
-// Log a message whenever we log in successfully.
-[self.loginSignals subscribeNext:^(RACSignal *loginSignal) {
+// -executionSignals returns a signal that includes the signals returned from
+// the above block, one for each time the command is executed.
+[self.loginCommand.executionSignals subscribeNext:^(RACSignal *loginSignal) {
+    // Log a message whenever we log in successfully.
     [loginSignal subscribeCompleted:^(id _) {
         NSLog(@"Logged in successfully!");
     }];
@@ -201,8 +193,7 @@ are usually used:
     }]
     subscribeNext:(NSArray *newMessages) {
         NSLog(@"New messages: %@", newMessages);
-    } 
-    completed:^{
+    } completed:^{
         NSLog(@"Fetched all messages.");
     }];
 ```
@@ -310,8 +301,8 @@ For example, the following code:
         combineLatest:@[
             self.usernameTextField.rac_textSignal,
             self.passwordTextField.rac_textSignal,
-            RACAbleWithStart(LoginManager.sharedManager, loggingIn),
-            RACAbleWithStart(self.loggedIn)
+            RACObserve(LoginManager.sharedManager, loggingIn),
+            RACObserve(self, loggedIn)
         ] reduce:^(NSString *username, NSString *password, NSNumber *loggingIn, NSNumber *loggedIn) {
             return @(username.length > 0 && password.length > 0 && !loggingIn.boolValue && !loggedIn.boolValue);
         }];
@@ -414,15 +405,16 @@ The above code can be cleaned up and optimized by simply composing signals:
 ```objc
 RACSignal *databaseSignal = [[databaseClient
     fetchObjectsMatchingPredicate:predicate]
-    subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]];
+    subscribeOn:[RACScheduler scheduler]];
 
-RACSignal *fileSignal = [RACSignal start:^(BOOL *success, NSError **error) {
+RACSignal *fileSignal = [RACSignal startEagerlyWithScheduler:[RACScheduler scheduler] block:^(id<RACSubscriber> subscriber) {
     NSMutableArray *filesInProgress = [NSMutableArray array];
     for (NSString *path in files) {
         [filesInProgress addObject:[NSData dataWithContentsOfFile:path]];
     }
 
-    return [filesInProgress copy];
+    [subscriber sendNext:[filesInProgress copy]];
+    [subscriber sendCompleted];
 }];
 
 [[RACSignal
@@ -515,13 +507,20 @@ out there:
 * [101 Rx Samples](http://rxwiki.wikidot.com/101samples)
 * [Programming Reactive Extensions and LINQ](http://www.amazon.com/Programming-Reactive-Extensions-Jesse-Liberty/dp/1430237473)
 
+RAC and Rx are both implementations of functional reactive programming. Here are
+some more resources for learning about FRP:
+
+* [What is FRP? - Elm Language](http://elm-lang.org/learn/What-is-FRP.elm)
+* [What is Functional Reactive Programming - Stack Overflow](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming/1030631#1030631)
+* [Escape from Callback Hell](http://elm-lang.org/learn/Escape-from-Callback-Hell.elm)
+
+[Basic Operators]: Documentation/BasicOperators.md
 [Documentation]: Documentation
 [Framework Overview]: Documentation/FrameworkOverview.md
 [Functional Reactive Programming]: http://en.wikipedia.org/wiki/Functional_reactive_programming
 [GHAPIDemo]:  https://github.com/ReactiveCocoa/GHAPIDemo
 [Memory Management]: Documentation/MemoryManagement.md
 [NSObject+RACLifting]: ReactiveCocoaFramework/ReactiveCocoa/NSObject+RACLifting.h
-[RACAble]: ReactiveCocoaFramework/ReactiveCocoa/NSObject+RACPropertySubscribing.h
 [RACDisposable]: ReactiveCocoaFramework/ReactiveCocoa/RACDisposable.h
 [RACEvent]: ReactiveCocoaFramework/ReactiveCocoa/RACEvent.h
 [RACMulticastConnection]: ReactiveCocoaFramework/ReactiveCocoa/RACMulticastConnection.h

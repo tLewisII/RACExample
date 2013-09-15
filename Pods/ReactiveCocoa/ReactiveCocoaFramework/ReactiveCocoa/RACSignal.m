@@ -7,12 +7,12 @@
 //
 
 #import "RACSignal.h"
-#import "NSObject+RACDescription.h"
 #import "EXTScope.h"
-#import "RACBehaviorSubject.h"
-#import "RACBlockTrampoline.h"
+#import "NSObject+RACDescription.h"
+#import "RACBacktrace.h"
 #import "RACCompoundDisposable.h"
 #import "RACDisposable.h"
+#import "RACMulticastConnection.h"
 #import "RACPassthroughSubscriber.h"
 #import "RACReplaySubject.h"
 #import "RACScheduler+Private.h"
@@ -20,18 +20,29 @@
 #import "RACSignal+Operations.h"
 #import "RACSignal+Private.h"
 #import "RACSubject.h"
+#import "RACSubscriber+Private.h"
 #import "RACSubscriber.h"
 #import "RACTuple.h"
-#import "RACMulticastConnection.h"
 #import <libkern/OSAtomic.h>
 
 // Retains signals while they wait for subscriptions.
 //
-// This set must only be used while synchronized on `RACActiveSignalsLock`.
-static NSMutableSet *RACActiveSignals = nil;
+// This set must only be used on the main thread.
+static CFMutableSetRef RACActiveSignals = nil;
 
-// Protects access to `RACActiveSignals`.
-static NSLock *RACActiveSignalsLock = nil;
+// A linked list of RACSignals, used in RACActiveSignalsToCheck.
+typedef struct RACSignalList {
+	CFTypeRef retainedSignal;
+	struct RACSignalList *next;
+} RACSignalList;
+
+// An atomic queue of signals to check for subscribers. If any signals with zero
+// subscribers are found in this queue, they are removed from RACActiveSignals.
+static OSQueueHead RACActiveSignalsToCheck = OS_ATOMIC_QUEUE_INIT;
+
+// Whether RACActiveSignalsToCheck will be enumerated on the next iteration on
+// the main run loop.
+static volatile uint32_t RACWillCheckActiveSignals = 0;
 
 @interface RACSignal () {
 	// Contains all subscribers to the receiver.
@@ -54,10 +65,13 @@ static NSLock *RACActiveSignalsLock = nil;
 + (void)initialize {
 	if (self != RACSignal.class) return;
 
-	RACActiveSignalsLock = [[NSLock alloc] init];
-	RACActiveSignalsLock.name = @"RACActiveSignalsLock";
+	CFSetCallBacks callbacks = kCFTypeSetCallBacks;
 
-	RACActiveSignals = [[NSMutableSet alloc] init];
+	// Use pointer equality and hashes for membership testing.
+	callbacks.equal = NULL;
+	callbacks.hash = NULL;
+
+	RACActiveSignals = CFSetCreateMutable(NULL, 0, &callbacks);
 }
 
 + (RACSignal *)createSignal:(RACDisposable * (^)(id<RACSubscriber> subscriber))didSubscribe {
@@ -79,35 +93,14 @@ static NSLock *RACActiveSignalsLock = nil;
 	}] setNameWithFormat:@"+never"];
 }
 
-+ (RACSignal *)start:(id (^)(BOOL *success, NSError **error))block {
-	return [[self startWithScheduler:[RACScheduler scheduler] block:block] setNameWithFormat:@"+start:"];
-}
-
-+ (RACSignal *)startWithScheduler:(RACScheduler *)scheduler block:(id (^)(BOOL *success, NSError **error))block {
-	return [[self startWithScheduler:scheduler subjectBlock:^(RACSubject *subject) {
-		BOOL success = YES;
-		NSError *error = nil;
-		id returned = block(&success, &error);
-		
-		if (!success) {
-			[subject sendError:error];
-		} else {
-			[subject sendNext:returned];
-			[subject sendCompleted];
-		}
-	}] setNameWithFormat:@"+startWithScheduler:block:"];
-}
-
-+ (RACSignal *)startWithScheduler:(RACScheduler *)scheduler subjectBlock:(void (^)(RACSubject *subject))block {
++ (RACSignal *)startEagerlyWithScheduler:(RACScheduler *)scheduler block:(void (^)(id<RACSubscriber> subscriber))block {
+	NSCParameterAssert(scheduler != nil);
 	NSCParameterAssert(block != NULL);
 
-	RACReplaySubject *subject = [[RACReplaySubject subject] setNameWithFormat:@"+startWithScheduler:subjectBlock:"];
-
-	[scheduler schedule:^{
-		block(subject);
-	}];
-	
-	return subject;
+	RACSignal *signal = [self startLazilyWithScheduler:scheduler block:block];
+	// Subscribe to force the lazy signal to call its block.
+	[[signal publish] connect];
+	return [signal setNameWithFormat:@"+startEagerlyWithScheduler:%@ block:", scheduler];
 }
 
 + (RACSignal *)startLazilyWithScheduler:(RACScheduler *)scheduler block:(void (^)(id<RACSubscriber> subscriber))block {
@@ -135,33 +128,50 @@ static NSLock *RACActiveSignalsLock = nil;
 	self = [super init];
 	if (self == nil) return nil;
 	
-	// We want to keep the signal around until all its subscribers are done
-	[RACActiveSignalsLock lock];
-	[RACActiveSignals addObject:self];
-	[RACActiveSignalsLock unlock];
-	
-	_subscribers = [[NSMutableArray alloc] init];
-	
 	// As soon as we're created we're already trying to be released. Such is life.
 	[self invalidateGlobalRefIfNoNewSubscribersShowUp];
 	
 	return self;
 }
 
-- (void)invalidateGlobalRef {
-	[RACActiveSignalsLock lock];
-	[RACActiveSignals removeObject:self];
-	[RACActiveSignalsLock unlock];
+static void RACCheckActiveSignals(void) {
+	// Clear this flag now, so another thread can re-dispatch to the main queue
+	// as needed.
+	OSAtomicAnd32Barrier(0, &RACWillCheckActiveSignals);
+
+	RACSignalList *elem;
+
+	while ((elem = OSAtomicDequeue(&RACActiveSignalsToCheck, offsetof(RACSignalList, next))) != NULL) {
+		RACSignal *signal = CFBridgingRelease(elem->retainedSignal);
+		free(elem);
+
+		if (signal.subscriberCount > 0) {
+			// We want to keep the signal around until all its subscribers are done
+			CFSetAddValue(RACActiveSignals, (__bridge void *)signal);
+		} else {
+			CFSetRemoveValue(RACActiveSignals, (__bridge void *)signal);
+		}
+	}
 }
 
 - (void)invalidateGlobalRefIfNoNewSubscribersShowUp {
-	// If no one subscribed in one pass of the main run loop, then we're free to
+	// If no one subscribes in one pass of the main run loop, then we're free to
 	// go. It's up to the caller to keep us alive if they still want us.
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (self.subscriberCount == 0) {
-			[self invalidateGlobalRef];
-		}
-	});
+	RACSignalList *elem = malloc(sizeof(*elem));
+	// This also serves to retain the signal until the next pass.
+	elem->retainedSignal = CFBridgingRetain(self);
+	OSAtomicEnqueue(&RACActiveSignalsToCheck, elem, offsetof(RACSignalList, next));
+
+	// Not using a barrier because duplicate scheduling isn't erroneous, just
+	// less optimized.
+	int32_t willCheck = OSAtomicOr32Orig(1, &RACWillCheckActiveSignals);
+
+	// Only schedule a check if RACWillCheckActiveSignals was 0 before.
+	if (willCheck == 0) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			RACCheckActiveSignals();
+		});
+	}
 }
 
 #pragma mark Managing Subscribers
@@ -404,6 +414,7 @@ static NSLock *RACActiveSignalsLock = nil;
 	subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber disposable:disposable];
 	
 	OSSpinLockLock(&_subscribersLock);
+	if (_subscribers == nil) _subscribers = [[NSMutableArray alloc] init];
 	[_subscribers addObject:subscriber];
 	OSSpinLockUnlock(&_subscribersLock);
 	
@@ -529,7 +540,7 @@ static const NSTimeInterval RACSignalAsynchronousWaitTimeout = 10;
 - (id)asynchronousFirstOrDefault:(id)defaultValue success:(BOOL *)success error:(NSError **)error {
 	NSCAssert([NSThread isMainThread], @"%s should only be used from the main thread", __func__);
 
-	__block id result = nil;
+	__block id result = defaultValue;
 	__block BOOL done = NO;
 
 	// Ensures that we don't pass values across thread boundaries by reference.
@@ -538,7 +549,7 @@ static const NSTimeInterval RACSignalAsynchronousWaitTimeout = 10;
 
 	[[[[self
 		take:1]
-		timeout:RACSignalAsynchronousWaitTimeout]
+		timeout:RACSignalAsynchronousWaitTimeout onScheduler:[RACScheduler scheduler]]
 		deliverOn:RACScheduler.mainThreadScheduler]
 		subscribeNext:^(id x) {
 			result = x;
@@ -565,8 +576,48 @@ static const NSTimeInterval RACSignalAsynchronousWaitTimeout = 10;
 
 - (BOOL)asynchronouslyWaitUntilCompleted:(NSError **)error {
 	BOOL success = NO;
-	[[self ignoreElements] asynchronousFirstOrDefault:nil success:&success error:error];
+	[[self ignoreValues] asynchronousFirstOrDefault:nil success:&success error:error];
 	return success;
 }
+
+@end
+
+@implementation RACSignal (Deprecated)
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
++ (RACSignal *)startWithScheduler:(RACScheduler *)scheduler subjectBlock:(void (^)(RACSubject *subject))block {
+	NSCParameterAssert(block != NULL);
+
+	RACReplaySubject *subject = [[RACReplaySubject subject] setNameWithFormat:@"+startWithScheduler:subjectBlock:"];
+
+	[scheduler schedule:^{
+		block(subject);
+	}];
+
+	return subject;
+}
+
++ (RACSignal *)start:(id (^)(BOOL *success, NSError **error))block {
+	return [[self startWithScheduler:[RACScheduler scheduler] block:block] setNameWithFormat:@"+start:"];
+}
+
++ (RACSignal *)startWithScheduler:(RACScheduler *)scheduler block:(id (^)(BOOL *success, NSError **error))block {
+	return [[self startWithScheduler:scheduler subjectBlock:^(id<RACSubscriber> subscriber) {
+		BOOL success = YES;
+		NSError *error = nil;
+		id returned = block(&success, &error);
+
+		if (!success) {
+			[subscriber sendError:error];
+		} else {
+			[subscriber sendNext:returned];
+			[subscriber sendCompleted];
+		}
+	}] setNameWithFormat:@"+startWithScheduler:block:"];
+}
+
+#pragma clang diagnostic pop
 
 @end
