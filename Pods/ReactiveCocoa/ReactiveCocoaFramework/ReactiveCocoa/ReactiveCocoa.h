@@ -6,10 +6,13 @@
 //  Copyright (c) 2012 GitHub, Inc. All rights reserved.
 //
 
-#import "EXTKeyPathCoding.h"
+#import "RACEXTKeyPathCoding.h"
 #import "NSArray+RACSequenceAdditions.h"
+#import "NSData+RACSupport.h"
 #import "NSDictionary+RACSequenceAdditions.h"
 #import "NSEnumerator+RACSequenceAdditions.h"
+#import "NSFileHandle+RACSupport.h"
+#import "NSNotificationCenter+RACSupport.h"
 #import "NSObject+RACDeallocating.h"
 #import "NSObject+RACLifting.h"
 #import "NSObject+RACPropertySubscribing.h"
@@ -17,6 +20,8 @@
 #import "NSOrderedSet+RACSequenceAdditions.h"
 #import "NSSet+RACSequenceAdditions.h"
 #import "NSString+RACSequenceAdditions.h"
+#import "NSString+RACSupport.h"
+#import "NSURLConnection+RACSupport.h"
 #import "RACBehaviorSubject.h"
 #import "RACChannel.h"
 #import "RACCommand.h"
@@ -44,11 +49,11 @@
 #import "RACUnit.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-	#import "RACDelegateProxy.h"
 	#import "UIActionSheet+RACSignalSupport.h"
 	#import "UIAlertView+RACSignalSupport.h"
 	#import "UIBarButtonItem+RACCommandSupport.h"
 	#import "UIButton+RACCommandSupport.h"
+	#import "UICollectionReusableView+RACSignalSupport.h"
 	#import "UIControl+RACSignalSupport.h"
 	#import "UIDatePicker+RACSignalSupport.h"
 	#import "UIGestureRecognizer+RACSignalSupport.h"

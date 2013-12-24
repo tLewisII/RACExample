@@ -7,7 +7,7 @@
 //
 
 #import "UISegmentedControl+RACSignalSupport.h"
-#import "EXTKeyPathCoding.h"
+#import "RACEXTKeyPathCoding.h"
 #import "UIControl+RACSignalSupport.h"
 #import "UIControl+RACSignalSupportPrivate.h"
 

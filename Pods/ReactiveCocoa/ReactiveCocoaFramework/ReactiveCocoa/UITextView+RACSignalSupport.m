@@ -7,7 +7,7 @@
 //
 
 #import "UITextView+RACSignalSupport.h"
-#import "EXTScope.h"
+#import "RACEXTScope.h"
 #import "NSObject+RACDeallocating.h"
 #import "RACDelegateProxy.h"
 #import "RACSignal+Operations.h"

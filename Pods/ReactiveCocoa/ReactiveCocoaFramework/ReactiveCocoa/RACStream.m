@@ -70,7 +70,10 @@
 - (instancetype)flattenMap:(RACStream * (^)(id value))block {
 	return [[self bind:^{
 		return ^(id value, BOOL *stop) {
-			return block(value);
+			id stream = block(value);
+			NSCAssert(stream != nil, @"Expected non-nil stream to be returned from -flattenMap:");
+
+			return stream;
 		};
 	}] setNameWithFormat:@"[%@] -flattenMap:", self.name];
 }
@@ -312,6 +315,23 @@
 	return [[self skipUntilBlock:^ BOOL (id x) {
 		return !predicate(x);
 	}] setNameWithFormat:@"[%@] -skipUntilBlock:", self.name];
+}
+
+- (instancetype)distinctUntilChanged {
+	Class class = self.class;
+
+	return [[self bind:^{
+		__block id lastValue = nil;
+		__block BOOL initial = YES;
+
+		return ^(id x, BOOL *stop) {
+			if (!initial && (lastValue == x || [x isEqual:lastValue])) return [class empty];
+
+			initial = NO;
+			lastValue = x;
+			return [class return:x];
+		};
+	}] setNameWithFormat:@"[%@] -distinctUntilChanged", self.name];
 }
 
 @end

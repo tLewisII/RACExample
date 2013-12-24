@@ -7,8 +7,7 @@
 //
 
 #import "RACSlideshowViewController.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <EXTScope.h>
+
 @interface RACSlideshowViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 

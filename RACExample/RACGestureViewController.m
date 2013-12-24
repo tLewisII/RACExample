@@ -8,8 +8,6 @@
 
 #import "RACGestureViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <EXTScope.h>
 @interface RACGestureViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *translationLabel;
 @property(weak, nonatomic) IBOutlet UILabel *stateLabel;
@@ -29,7 +27,7 @@
     ///The value we really care about is the translation value, so that is what we return.
     RACSignal *panGestureSignal = [panGesture.rac_gestureSignal map:^id(UIPanGestureRecognizer *recognizer) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
-        NSInteger yBoundary = MIN(recognizer.view.center.y + translation.y, originalCenter.y - self.navigationController.navigationBar.frame.size.height);
+        NSInteger yBoundary = MIN(recognizer.view.center.y + translation.y, originalCenter.y);
         [recognizer setTranslation:CGPointZero inView:self.view];
         return [NSValue valueWithCGPoint:CGPointMake(recognizer.view.center.x, yBoundary)];
     }];

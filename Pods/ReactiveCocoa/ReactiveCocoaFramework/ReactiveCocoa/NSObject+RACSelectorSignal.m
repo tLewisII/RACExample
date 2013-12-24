@@ -7,6 +7,7 @@
 //
 
 #import "NSObject+RACSelectorSignal.h"
+#import "RACEXTRuntimeExtensions.h"
 #import "NSInvocation+RACTypeParsing.h"
 #import "NSObject+RACDeallocating.h"
 #import "RACCompoundDisposable.h"
@@ -14,6 +15,7 @@
 #import "RACObjCRuntime.h"
 #import "RACSubject.h"
 #import "RACTuple.h"
+#import "NSObject+RACDescription.h"
 #import <objc/message.h>
 #import <objc/runtime.h>
 
@@ -86,6 +88,52 @@ static void RACSwizzleForwardInvocation(Class class) {
 	class_replaceMethod(class, forwardInvocationSEL, imp_implementationWithBlock(newForwardInvocation), "v@:@");
 }
 
+static void RACSwizzleRespondsToSelector(Class class) {
+	SEL respondsToSelectorSEL = @selector(respondsToSelector:);
+
+	// Preserve existing implementation of -respondsToSelector:.
+	Method respondsToSelectorMethod = class_getInstanceMethod(class, respondsToSelectorSEL);
+	BOOL (*originalRespondsToSelector)(id, SEL, SEL) = (__typeof__(originalRespondsToSelector))method_getImplementation(respondsToSelectorMethod);
+
+	// Set up a new version of -respondsToSelector: that returns YES for methods
+	// added by -rac_signalForSelector:.
+	//
+	// If the selector has a method defined on the receiver's actual class, and
+	// if that method's implementation is _objc_msgForward, then returns whether
+	// the instance has a signal for the selector.
+	// Otherwise, call the original -respondsToSelector:.
+	id newRespondsToSelector = ^ BOOL (id self, SEL selector) {
+		Method method = rac_getImmediateInstanceMethod(object_getClass(self), selector);
+
+		if (method != NULL && method_getImplementation(method) == _objc_msgForward) {
+			SEL aliasSelector = RACAliasForSelector(selector);
+			return objc_getAssociatedObject(self, aliasSelector) != nil;
+		}
+
+		return originalRespondsToSelector(self, respondsToSelectorSEL, selector);
+	};
+
+	class_replaceMethod(class, @selector(respondsToSelector:), imp_implementationWithBlock(newRespondsToSelector), method_getTypeEncoding(respondsToSelectorMethod));
+}
+
+// It's hard to tell which struct return types use _objc_msgForward, and
+// which use _objc_msgForward_stret instead, so just exclude all struct, array,
+// union, complex and vector return types.
+static void RACCheckTypeEncoding(const char *typeEncoding) {
+#if !NS_BLOCK_ASSERTIONS
+	// Some types, including vector types, are not encoded. In these cases the
+	// signature starts with the size of the argument frame.
+	NSCAssert(*typeEncoding < '1' || *typeEncoding > '9', @"unknown method return type not supported in type encoding: %s", typeEncoding);
+	NSCAssert(strstr(typeEncoding, "(") != typeEncoding, @"union method return type not supported");
+	NSCAssert(strstr(typeEncoding, "{") != typeEncoding, @"struct method return type not supported");
+	NSCAssert(strstr(typeEncoding, "[") != typeEncoding, @"array method return type not supported");
+	NSCAssert(strstr(typeEncoding, @encode(_Complex float)) != typeEncoding, @"complex float method return type not supported");
+	NSCAssert(strstr(typeEncoding, @encode(_Complex double)) != typeEncoding, @"complex double method return type not supported");
+	NSCAssert(strstr(typeEncoding, @encode(_Complex long double)) != typeEncoding, @"complex long double method return type not supported");
+
+#endif // !NS_BLOCK_ASSERTIONS
+}
+
 static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol) {
 	SEL aliasSelector = RACAliasForSelector(selector);
 
@@ -96,7 +144,7 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 		Class class = RACSwizzleClass(self);
 		NSCAssert(class != nil, @"Could not swizzle class of %@", self);
 
-		subject = [RACSubject subject];
+		subject = [[RACSubject subject] setNameWithFormat:@"%@ -rac_signalForSelector: %@", self.rac_description, NSStringFromSelector(selector)];
 		objc_setAssociatedObject(self, aliasSelector, subject, OBJC_ASSOCIATION_RETAIN);
 
 		[self.rac_deallocDisposable addDisposable:[RACDisposable disposableWithBlock:^{
@@ -122,6 +170,8 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 				typeEncoding = methodDescription.types;
 			}
 
+			RACCheckTypeEncoding(typeEncoding);
+
 			// Define the selector to call -forwardInvocation:.
 			if (!class_addMethod(class, selector, _objc_msgForward, typeEncoding)) {
 				NSDictionary *userInfo = @{
@@ -133,7 +183,11 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 			}
 		} else if (method_getImplementation(targetMethod) != _objc_msgForward) {
 			// Make a method alias for the existing method implementation.
-			BOOL addedAlias __attribute__((unused)) = class_addMethod(class, aliasSelector, method_getImplementation(targetMethod), method_getTypeEncoding(targetMethod));
+			const char *typeEncoding = method_getTypeEncoding(targetMethod);
+
+			RACCheckTypeEncoding(typeEncoding);
+
+			BOOL addedAlias __attribute__((unused)) = class_addMethod(class, aliasSelector, method_getImplementation(targetMethod), typeEncoding);
 			NSCAssert(addedAlias, @"Original implementation for %@ is already copied to %@ on %@", NSStringFromSelector(selector), NSStringFromSelector(aliasSelector), class);
 
 			// Redefine the selector to call -forwardInvocation:.
@@ -176,9 +230,13 @@ static Class RACSwizzleClass(NSObject *self) {
 		// Just swizzle -forwardInvocation: in-place. Since the object's class
 		// was almost certainly dynamically changed, we shouldn't see another of
 		// these classes in the hierarchy.
+		//
+		// Additionally, swizzle -respondsToSelector: because the default
+		// implementation may be ignorant of methods added to this class.
 		@synchronized (swizzledClasses()) {
 			if (![swizzledClasses() containsObject:className]) {
 				RACSwizzleForwardInvocation(baseClass);
+				RACSwizzleRespondsToSelector(baseClass);
 				[swizzledClasses() addObject:className];
 			}
 		}
@@ -194,6 +252,7 @@ static Class RACSwizzleClass(NSObject *self) {
 		if (subclass == nil) return nil;
 
 		RACSwizzleForwardInvocation(subclass);
+		RACSwizzleRespondsToSelector(subclass);
 		objc_registerClassPair(subclass);
 	}
 

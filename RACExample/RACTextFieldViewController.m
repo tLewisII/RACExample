@@ -9,8 +9,6 @@
 #define RedStar [UIImage imageNamed:@"RedStar"]
 
 #import "RACTextFieldViewController.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <EXTScope.h>
 
 @interface RACTextFieldViewController () <UITextFieldDelegate>
 @property(weak, nonatomic) IBOutlet UITextField *nameField;

@@ -7,8 +7,6 @@
 //
 
 #import "RACSequenceViewController.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <EXTScope.h>
 @interface RACSequenceViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *stringLabel;
 @property (weak, nonatomic) IBOutlet UILabel *anyLabel;

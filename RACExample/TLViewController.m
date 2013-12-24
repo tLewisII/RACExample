@@ -8,7 +8,6 @@
 
 #import "TLViewController.h"
 #import "TLDataSource.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface TLViewController () <UITableViewDelegate>
 @property(strong, nonatomic) UITableView *tableView;
