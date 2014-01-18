@@ -36,7 +36,7 @@
 }
 
 - (RACSignal *)photosFromGroup:(ALAssetsGroup *)group {
-    return [[RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
+    return [[[RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
         ALAssetsFilter *filter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:filter];
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -46,6 +46,6 @@
             else [subscriber sendCompleted];
         }];
         return nil;
-    }]deliverOn:[RACScheduler mainThreadScheduler]];
+    }]deliverOn:[RACScheduler mainThreadScheduler]]collect];
 }
 @end

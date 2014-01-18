@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 @class ALAssetsGroup;
 @interface RACAlbumDisplayViewController : UIViewController
-- (instancetype)initWithGroup:(ALAssetsGroup *)group photos:(NSArray *)photos;
+@property (strong, nonatomic) ALAssetsGroup *group;
+@property(strong, nonatomic) NSArray *photos;
 @end

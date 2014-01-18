@@ -20,4 +20,6 @@ typedef void (^CellConfigureBlock)(id cell, id item, id indexPath);
 */
 - (instancetype)initWithItems:(NSArray *)items cellIdentifier:(NSString *)identifier configureCellBlock:(CellConfigureBlock)block;
 
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
+
 @end
