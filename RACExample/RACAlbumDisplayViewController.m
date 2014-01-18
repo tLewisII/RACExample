@@ -7,10 +7,14 @@
 //
 
 #import "RACAlbumDisplayViewController.h"
+#import "TLDataSource.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+
 @interface RACAlbumDisplayViewController ()
 @property (strong, nonatomic) ALAssetsGroup *group;
 @property(strong, nonatomic) NSArray *photos;
+@property(strong, nonatomic) TLDataSource *datasource;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end
 
 @implementation RACAlbumDisplayViewController
@@ -28,7 +32,10 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	self.datasource = [[TLDataSource alloc]initWithItems:self.photos cellIdentifier:@"CELL" configureCellBlock:^(UICollectionViewCell *cell, ALAsset *item, id indexPath) {
+        cell.backgroundView = [[UIImageView alloc]initWithImage:[[UIImage alloc]initWithCGImage:item.thumbnail]];
+    }];
+    self.collectionView.dataSource = self.datasource;
 }
 
 
