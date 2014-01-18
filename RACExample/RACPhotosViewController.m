@@ -54,6 +54,7 @@
     RACTupleUnpack(ALAssetsGroup *group, NSArray *photos) = sender;
      
     RACAlbumDisplayViewController *albumVC = (RACAlbumDisplayViewController *)segue.destinationViewController;
+    albumVC.title = [group valueForProperty:ALAssetsGroupPropertyName];
     albumVC.group = group;
     albumVC.photos = photos;
 }
