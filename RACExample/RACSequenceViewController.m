@@ -22,10 +22,8 @@
     @weakify(self)
     ///Here we can easily change the case of a string, as each `next` event will be each value from the sequence in order. So we simply map and return the switched case string.
     [[[@"StRiNgS".rac_sequence.signal map:^id(NSString *value) {
-        if([value isEqualToString:value.uppercaseString])
-            return value.lowercaseString;
-        else
-            return value.uppercaseString;
+        if([value isEqualToString:value.uppercaseString])return value.lowercaseString;
+        else return value.uppercaseString;
     }]deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSString *x) {
         @strongify(self)
         self.stringLabel.text = [self.stringLabel.text stringByAppendingString:x];
