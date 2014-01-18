@@ -10,7 +10,7 @@
 
 typedef void (^CellConfigureBlock)(id cell, id item, id indexPath);
 
-@interface TLDataSource : NSObject <UITableViewDataSource>
+@interface TLDataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 /**
  * A datasource class that can serve as a UITableView datasource.
  *\param items the array that will serve as the datasource.
@@ -19,5 +19,7 @@ typedef void (^CellConfigureBlock)(id cell, id item, id indexPath);
  *\returns an instance of the class that will serve as a datasource for either a UITableView or UICollectionView.
 */
 - (instancetype)initWithItems:(NSArray *)items cellIdentifier:(NSString *)identifier configureCellBlock:(CellConfigureBlock)block;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
 
 @end

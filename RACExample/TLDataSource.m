@@ -27,14 +27,11 @@
 
 }
 
-- (id)itemForIndexPath:(NSIndexPath *)indexPath {
-    return self.items[(NSUInteger)indexPath.row];
-}
 #pragma mark - UITableView datasource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
-    id item = [self itemForIndexPath:indexPath];
+    id item = self.items[(NSUInteger)indexPath.row];
     self.configureCellBlock(cell, item, indexPath);
 
     return cell;
@@ -46,5 +43,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.items.count;
+}
+
+#pragma mark - UICollectionView datasource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.items.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    id item = self.items[(NSUInteger)indexPath.row];
+    self.configureCellBlock(cell, item, indexPath);
+    
+    return cell;
+}
+
+#pragma mark - object at indexed subscript
+- (id)objectAtIndexedSubscript:(NSUInteger)index {
+    return self.items[index];
 }
 @end
