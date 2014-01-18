@@ -13,7 +13,6 @@
 @property(strong, nonatomic) UITableView *tableView;
 @property(strong, nonatomic) TLDataSource *datasource;
 @property(strong, nonatomic) RACSubject *delegateSubject;
-@property(strong, nonatomic) NSArray *sections;
 @end
 
 @implementation TLViewController
@@ -22,11 +21,12 @@
     [super viewDidLoad];
     self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    self.sections = @[ @"Gestures", @"Text Fields", @"Slideshow", @"Sequence", @"Photo Library"];
     CellConfigureBlock block = ^(UITableViewCell *cell, NSString *item, id indexPath) {
         cell.textLabel.text = item;
     };
-    self.datasource = [[TLDataSource alloc]initWithItems:self.sections cellIdentifier:@"Cell" configureCellBlock:block];
+    self.datasource = [[TLDataSource alloc]initWithItems:@[@"Gestures", @"Text Fields", @"Slideshow", @"Sequence", @"Photo Library"]
+                                          cellIdentifier:@"Cell"
+                                      configureCellBlock:block];
     self.tableView.dataSource = self.datasource;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
@@ -38,7 +38,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *item = self.sections[(NSUInteger)indexPath.row];
+    NSString *item = self.datasource[(NSUInteger)indexPath.row];
     ///We want the item from the array to perform the segue with.
     [self.delegateSubject sendNext:item];
 }

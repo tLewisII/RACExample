@@ -45,9 +45,10 @@
     RACSignal *groupSignal = [RACSignal return:group];
     RACSignal *photosAndGroup = [RACSignal merge:@[photosSignal, groupSignal]];
    RACSignal *segueSignal = [[photosAndGroup collect] map:^id(NSArray *value) {
-       return [RACTuple tupleWithObjects:value.firstObject, value.lastObject, nil];
+       return [RACTuple tupleWithObjectsFromArray:value];
     }];
-    [self rac_liftSelector:@selector(performSegueWithIdentifier:sender:) withSignals:[RACSignal return:@"Album Photos"], segueSignal, nil];
+    [self rac_liftSelector:@selector(performSegueWithIdentifier:sender:)
+               withSignals:[RACSignal return:@"Album Photos"], segueSignal, nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(RACTuple *)sender {
