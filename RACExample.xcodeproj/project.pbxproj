@@ -12,6 +12,7 @@
 		DB7BDDD1188AFE67007090C0 /* RACPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDD0188AFE67007090C0 /* RACPhotoManager.m */; };
 		DB7BDDD3188AFEF6007090C0 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB7BDDD2188AFEF6007090C0 /* AssetsLibrary.framework */; };
 		DB7BDDD7188AFFF8007090C0 /* RACPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */; };
+		DB7BDDDD188B04F5007090C0 /* RACAlbumDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */; };
 		DBA5C7111797659A0008F824 /* RACSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA5C7101797659A0008F824 /* RACSequenceViewController.m */; };
 		DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C31793575E00DC0101 /* UIKit.framework */; };
 		DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C51793575E00DC0101 /* Foundation.framework */; };
@@ -44,6 +45,8 @@
 		DB7BDDD2188AFEF6007090C0 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		DB7BDDD5188AFFF8007090C0 /* RACPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACPhotosViewController.h; sourceTree = "<group>"; };
 		DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACPhotosViewController.m; sourceTree = "<group>"; };
+		DB7BDDDB188B04F5007090C0 /* RACAlbumDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACAlbumDisplayViewController.h; sourceTree = "<group>"; };
+		DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACAlbumDisplayViewController.m; sourceTree = "<group>"; };
 		DBA5C70F1797659A0008F824 /* RACSequenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACSequenceViewController.h; sourceTree = "<group>"; };
 		DBA5C7101797659A0008F824 /* RACSequenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACSequenceViewController.m; sourceTree = "<group>"; };
 		DBBA69C01793575E00DC0101 /* RACExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RACExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +111,8 @@
 				DB7BDDD0188AFE67007090C0 /* RACPhotoManager.m */,
 				DB7BDDD5188AFFF8007090C0 /* RACPhotosViewController.h */,
 				DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */,
+				DB7BDDDB188B04F5007090C0 /* RACAlbumDisplayViewController.h */,
+				DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */,
 			);
 			name = "Photo Library";
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
 				DB7BDDD7188AFFF8007090C0 /* RACPhotosViewController.m in Sources */,
 				DBBA69F61793856B00DC0101 /* RACTextFieldViewController.m in Sources */,
+				DB7BDDDD188B04F5007090C0 /* RACAlbumDisplayViewController.m in Sources */,
 				DB3169F61794A5C900BAEDCB /* RACSlideshowViewController.m in Sources */,
 				DBA5C7111797659A0008F824 /* RACSequenceViewController.m in Sources */,
 			);
