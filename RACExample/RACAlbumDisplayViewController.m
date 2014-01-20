@@ -25,10 +25,14 @@
         cell.backgroundView = [[UIImageView alloc]initWithImage:[[UIImage alloc]initWithCGImage:item.thumbnail]];
     }];
     self.collectionView.dataSource = self.datasource;
+    self.collectionView.delegate = self;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    RACLargeDisplayViewController *largeVC = [RACLargeDisplayViewController new];
+    largeVC.photoArray = self.datasource.items;
+    largeVC.index = indexPath.row;
+    [self.navigationController pushViewController:largeVC animated:YES];
 }
 
 @end

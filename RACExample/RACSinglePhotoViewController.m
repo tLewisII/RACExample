@@ -29,7 +29,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    UIImageView *photoView = [[UIImageView alloc]initWithImage:self.photo];
+    photoView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    CGFloat width = MIN(CGRectGetWidth(self.view.frame), self.photo.size.width);
+    CGFloat height = MIN(CGRectGetHeight(self.view.frame), self.photo.size.height);
+    [self.view addSubview:photoView];
+    [self.view addConstraints:@[
+                               [NSLayoutConstraint
+                                constraintWithItem:photoView
+                                attribute:NSLayoutAttributeCenterX
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:self.view
+                                attribute:NSLayoutAttributeCenterX
+                                multiplier:1.0
+                                constant:0],
+                               [NSLayoutConstraint
+                                constraintWithItem:photoView
+                                attribute:NSLayoutAttributeCenterY
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:self.view
+                                attribute:NSLayoutAttributeCenterY
+                                multiplier:1.0
+                                constant:0],
+                               [NSLayoutConstraint
+                                constraintWithItem:photoView
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:nil
+                                attribute:NSLayoutAttributeNotAnAttribute
+                                multiplier:1.0
+                                constant:width],
+                               [NSLayoutConstraint
+                                constraintWithItem:photoView
+                                attribute:NSLayoutAttributeHeight
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:nil
+                                attribute:NSLayoutAttributeNotAnAttribute
+                                multiplier:1.0
+                                constant:height]
+                               ]];
 }
 
 - (void)didReceiveMemoryWarning

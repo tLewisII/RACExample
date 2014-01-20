@@ -22,4 +22,5 @@ typedef void (^CellConfigureBlock)(id cell, id item, id indexPath);
 
 - (id)objectAtIndexedSubscript:(NSUInteger)index;
 
+@property(strong, nonatomic) NSArray *items;
 @end
