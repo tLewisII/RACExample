@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A3A8E0343E5B40D2A6ECA1E0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B205D9F76C54EED83B92297 /* libPods.a */; };
 		DB3169F61794A5C900BAEDCB /* RACSlideshowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3169F51794A5C900BAEDCB /* RACSlideshowViewController.m */; };
+		DB56E4E6188D6BC000681B2C /* RACLargeDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB56E4E5188D6BC000681B2C /* RACLargeDisplayViewController.m */; };
+		DB56E4E9188D6BDF00681B2C /* RACSinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB56E4E8188D6BDF00681B2C /* RACSinglePhotoViewController.m */; };
 		DB7BDDD1188AFE67007090C0 /* RACPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDD0188AFE67007090C0 /* RACPhotoManager.m */; };
 		DB7BDDD3188AFEF6007090C0 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB7BDDD2188AFEF6007090C0 /* AssetsLibrary.framework */; };
 		DB7BDDD7188AFFF8007090C0 /* RACPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */; };
@@ -40,6 +42,10 @@
 		5B205D9F76C54EED83B92297 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB3169F41794A5C900BAEDCB /* RACSlideshowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACSlideshowViewController.h; sourceTree = "<group>"; };
 		DB3169F51794A5C900BAEDCB /* RACSlideshowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACSlideshowViewController.m; sourceTree = "<group>"; };
+		DB56E4E4188D6BC000681B2C /* RACLargeDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACLargeDisplayViewController.h; sourceTree = "<group>"; };
+		DB56E4E5188D6BC000681B2C /* RACLargeDisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACLargeDisplayViewController.m; sourceTree = "<group>"; };
+		DB56E4E7188D6BDF00681B2C /* RACSinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACSinglePhotoViewController.h; sourceTree = "<group>"; };
+		DB56E4E8188D6BDF00681B2C /* RACSinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACSinglePhotoViewController.m; sourceTree = "<group>"; };
 		DB7BDDCF188AFE67007090C0 /* RACPhotoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACPhotoManager.h; sourceTree = "<group>"; };
 		DB7BDDD0188AFE67007090C0 /* RACPhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACPhotoManager.m; sourceTree = "<group>"; };
 		DB7BDDD2188AFEF6007090C0 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -113,6 +119,10 @@
 				DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */,
 				DB7BDDDB188B04F5007090C0 /* RACAlbumDisplayViewController.h */,
 				DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */,
+				DB56E4E4188D6BC000681B2C /* RACLargeDisplayViewController.h */,
+				DB56E4E5188D6BC000681B2C /* RACLargeDisplayViewController.m */,
+				DB56E4E7188D6BDF00681B2C /* RACSinglePhotoViewController.h */,
+				DB56E4E8188D6BDF00681B2C /* RACSinglePhotoViewController.m */,
 			);
 			name = "Photo Library";
 			sourceTree = "<group>";
@@ -355,8 +365,10 @@
 				DB7BDDD1188AFE67007090C0 /* RACPhotoManager.m in Sources */,
 				DBBA69D41793575E00DC0101 /* TLAppDelegate.m in Sources */,
 				DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */,
+				DB56E4E6188D6BC000681B2C /* RACLargeDisplayViewController.m in Sources */,
 				DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */,
 				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
+				DB56E4E9188D6BDF00681B2C /* RACSinglePhotoViewController.m in Sources */,
 				DB7BDDD7188AFFF8007090C0 /* RACPhotosViewController.m in Sources */,
 				DBBA69F61793856B00DC0101 /* RACTextFieldViewController.m in Sources */,
 				DB7BDDDD188B04F5007090C0 /* RACAlbumDisplayViewController.m in Sources */,
