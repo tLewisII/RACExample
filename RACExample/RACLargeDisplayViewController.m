@@ -7,9 +7,11 @@
 //
 
 #import "RACLargeDisplayViewController.h"
+#import "RACSinglePhotoViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface RACLargeDisplayViewController ()
-
+@interface RACLargeDisplayViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate>
+@property(strong, nonatomic) UIPageViewController *pageViewController;
 @end
 
 @implementation RACLargeDisplayViewController
@@ -23,16 +25,54 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    UITapGestureRecognizer *hideNavGesture = [[UITapGestureRecognizer alloc]init];
+    RACSignal *hiddenSignal = [hideNavGesture.rac_gestureSignal map:^id(id value) {
+        return @(!self.navigationController.navigationBarHidden);
+    }];
+    [self.view addGestureRecognizer:hideNavGesture];
+    [self.navigationController rac_liftSelector:@selector(setNavigationBarHidden:animated:) withSignals:hiddenSignal, [RACSignal return:@YES], nil];
+    // View controllers
+    self.pageViewController = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionInterPageSpacingKey:@(30)}];
+    self.pageViewController.dataSource = self;
+    self.pageViewController.delegate = self;
+    [self addChildViewController:self.pageViewController];
+    
+    [self.pageViewController setViewControllers:@[[self photoViewControllerForIndex:self.index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    self.view.backgroundColor = [UIColor whiteColor];
+    // Configure subviews
+    self.pageViewController.view.frame = self.view.bounds;
+   
+    [self.view addSubview:self.pageViewController.view];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (RACSinglePhotoViewController *)photoViewControllerForIndex:(NSInteger)index {
+    if(index >= 0 && index < self.photoArray.count) {
+        ALAsset *object = self.photoArray[(NSUInteger)index];
+        UIImage *image = [UIImage imageWithCGImage:object.defaultRepresentation.fullScreenImage];
+        RACSinglePhotoViewController *photoViewController = [[RACSinglePhotoViewController alloc]initWithImage:image index:index];
+        return photoViewController;
+    }
+    
+    // Index was out of bounds, return nil
+    return nil;
+}
+
+#pragma mark - UIPageViewControllerDelegate Methods
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+
+}
+
+#pragma mark - UIPageViewControllerDataSource Methods
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(RACSinglePhotoViewController *)viewController {
+    return [self photoViewControllerForIndex:viewController.photoIndex - 1];
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(RACSinglePhotoViewController *)viewController {
+    return [self photoViewControllerForIndex:viewController.photoIndex + 1];
 }
 
 @end

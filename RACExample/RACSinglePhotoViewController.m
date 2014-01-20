@@ -9,17 +9,20 @@
 #import "RACSinglePhotoViewController.h"
 
 @interface RACSinglePhotoViewController ()
-
+@property(strong, nonatomic) UIImage *photo;
 @end
 
 @implementation RACSinglePhotoViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+- (instancetype)initWithImage:(UIImage *)image index:(NSUInteger)index {
+    self = [super init];
+    if (!self) {
+        return nil;
     }
+    
+    _photoIndex = index;
+    _photo = image;
+    
     return self;
 }
 

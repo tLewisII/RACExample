@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RACSinglePhotoViewController : UIViewController
+- (instancetype)initWithImage:(UIImage *)image index:(NSUInteger)index;
 
+@property(nonatomic, readonly) NSInteger photoIndex;
 @end

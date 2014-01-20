@@ -9,8 +9,9 @@
 #import "RACAlbumDisplayViewController.h"
 #import "TLDataSource.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "RACLargeDisplayViewController.h"
 
-@interface RACAlbumDisplayViewController ()
+@interface RACAlbumDisplayViewController () <UICollectionViewDelegateFlowLayout>
 @property(strong, nonatomic) TLDataSource *datasource;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end
@@ -26,5 +27,8 @@
     self.collectionView.dataSource = self.datasource;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
 
 @end
