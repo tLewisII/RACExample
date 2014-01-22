@@ -9,7 +9,6 @@
 #import "TLDataSource.h"
 
 @interface TLDataSource ()
-@property(nonatomic, strong) NSArray *items;
 @property(nonatomic, copy) NSString *cellIdentifier;
 @property(nonatomic, copy) CellConfigureBlock configureCellBlock;
 @end
@@ -66,4 +65,5 @@
 - (id)objectAtIndexedSubscript:(NSUInteger)index {
     return self.items[index];
 }
+
 @end
