@@ -30,6 +30,7 @@
 {
     [super viewDidLoad];
     UIImageView *photoView = [[UIImageView alloc]initWithImage:self.photo];
+    photoView.contentMode = UIViewContentModeScaleAspectFit;
     photoView.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     CGFloat width = MIN(CGRectGetWidth(self.view.frame), self.photo.size.width);

@@ -14,6 +14,7 @@
 @interface RACAlbumDisplayViewController () <UICollectionViewDelegateFlowLayout>
 @property(strong, nonatomic) TLDataSource *datasource;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property(strong, nonatomic) RACSignal *photoScrollSignal;
 @end
 
 @implementation RACAlbumDisplayViewController
@@ -32,6 +33,10 @@
     RACLargeDisplayViewController *largeVC = [RACLargeDisplayViewController new];
     largeVC.photoArray = self.datasource.items;
     largeVC.index = indexPath.row;
+    
+    self.photoScrollSignal = largeVC.photoIndexSignal;
+    [self.collectionView rac_liftSelector:@selector(scrollToItemAtIndexPath:atScrollPosition:animated:) withSignals:self.photoScrollSignal, [RACSignal return:@(UICollectionViewScrollPositionCenteredVertically)], [RACSignal return:@NO], nil];
+    
     [self.navigationController pushViewController:largeVC animated:YES];
 }
 

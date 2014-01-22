@@ -12,6 +12,8 @@
 
 @interface RACLargeDisplayViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate>
 @property(strong, nonatomic) UIPageViewController *pageViewController;
+@property(strong, nonatomic) RACSubject *photoIndexSubject;
+
 @end
 
 @implementation RACLargeDisplayViewController
@@ -62,7 +64,8 @@
 #pragma mark - UIPageViewControllerDelegate Methods
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
-
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.pageViewController.viewControllers.firstObject photoIndex] inSection:0];
+    [self.photoIndexSubject sendNext:indexPath];
 }
 
 #pragma mark - UIPageViewControllerDataSource Methods
@@ -75,4 +78,10 @@
     return [self photoViewControllerForIndex:viewController.photoIndex + 1];
 }
 
+- (RACSignal *)photoIndexSignal {
+    if(!_photoIndexSubject) {
+        _photoIndexSubject = [RACSubject new];
+    }
+    return _photoIndexSubject;
+}
 @end

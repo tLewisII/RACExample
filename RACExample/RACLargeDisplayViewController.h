@@ -11,4 +11,6 @@
 @interface RACLargeDisplayViewController : UIViewController
 @property(strong, nonatomic) NSArray *photoArray;
 @property(nonatomic) NSUInteger index;
+
+@property(strong, nonatomic, readonly) RACSignal *photoIndexSignal;
 @end
