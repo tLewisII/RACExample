@@ -22,7 +22,7 @@
 }
 
 - (RACSignal *)photoAlbums {
-    return [[RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
+    return [RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
         [self.library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             if(group) {
                 [subscriber sendNext:group];
@@ -32,11 +32,11 @@
             [subscriber sendError:error];
         }];
         return nil;
-    }]collect];
+    }];
 }
 
 - (RACSignal *)photosFromGroup:(ALAssetsGroup *)group {
-    return [[[RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
+    return [RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
         ALAssetsFilter *filter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:filter];
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -46,6 +46,6 @@
             else [subscriber sendCompleted];
         }];
         return nil;
-    }]deliverOn:[RACScheduler mainThreadScheduler]]collect];
+    }];
 }
 @end
