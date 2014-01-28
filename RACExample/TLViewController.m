@@ -19,12 +19,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"RACExample";
     self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     CellConfigureBlock block = ^(UITableViewCell *cell, NSString *item, id indexPath) {
         cell.textLabel.text = item;
     };
-    self.datasource = [[TLDataSource alloc]initWithItems:@[@"Gestures", @"Text Fields", @"Slideshow", @"Sequence", @"Photo Library"]
+    self.datasource = [[TLDataSource alloc]initWithItems:@[@"Gestures", @"Text Fields", @"Slideshow", @"Photo Library"]
                                           cellIdentifier:@"Cell"
                                       configureCellBlock:block];
     self.tableView.dataSource = self.datasource;
