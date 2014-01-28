@@ -8,10 +8,11 @@
 
 #import "RACGestureViewController.h"
 #import <QuartzCore/QuartzCore.h>
+
 @interface RACGestureViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *translationLabel;
 @property(weak, nonatomic) IBOutlet UILabel *stateLabel;
-@property(strong,nonatomic)RACSubject *animationDelegate;
+@property(strong,nonatomic) RACSubject *animationDelegate;
 @property (weak, nonatomic) IBOutlet UILabel *pinchLabel;
 
 @end
