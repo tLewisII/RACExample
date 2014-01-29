@@ -11,3 +11,7 @@ Snapshots
 
 # osx noise
 .DS_Store
+
+# AppCode
+*.idea
+
