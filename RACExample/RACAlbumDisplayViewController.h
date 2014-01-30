@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class ALAssetsGroup;
+
 @interface RACAlbumDisplayViewController : UIViewController
-@property (strong, nonatomic) ALAssetsGroup *group;
+@property(strong, nonatomic) ALAssetsGroup *group;
 @property(strong, nonatomic) NSArray *photos;
 @end

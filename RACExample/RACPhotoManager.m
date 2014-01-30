@@ -15,9 +15,9 @@
     if(!self) {
         return nil;
     }
-    
+
     self.library = [ALAssetsLibrary new];
-    
+
     return self;
 }
 

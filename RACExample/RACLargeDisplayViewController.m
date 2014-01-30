@@ -18,15 +18,6 @@
 
 @implementation RACLargeDisplayViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     UITapGestureRecognizer *hideNavGesture = [[UITapGestureRecognizer alloc]init];
@@ -36,17 +27,19 @@
     [self.view addGestureRecognizer:hideNavGesture];
     [self.navigationController rac_liftSelector:@selector(setNavigationBarHidden:animated:) withSignals:hiddenSignal, [RACSignal return:@YES], nil];
     // View controllers
-    self.pageViewController = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionInterPageSpacingKey:@(30)}];
+    self.pageViewController = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionInterPageSpacingKey : @(30)}];
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
     [self addChildViewController:self.pageViewController];
-    
+
     [self.pageViewController setViewControllers:@[[self photoViewControllerForIndex:self.index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     self.view.backgroundColor = [UIColor whiteColor];
     // Configure subviews
     self.pageViewController.view.frame = self.view.bounds;
-   
+
+    [self.pageViewController willMoveToParentViewController:self];
     [self.view addSubview:self.pageViewController.view];
+    [self.pageViewController didMoveToParentViewController:self];
 }
 
 - (RACSinglePhotoViewController *)photoViewControllerForIndex:(NSInteger)index {
@@ -56,7 +49,7 @@
         RACSinglePhotoViewController *photoViewController = [[RACSinglePhotoViewController alloc]initWithImage:image index:index];
         return photoViewController;
     }
-    
+
     // Index was out of bounds, return nil
     return nil;
 }

@@ -13,7 +13,7 @@
 
 @interface RACAlbumDisplayViewController () <UICollectionViewDelegateFlowLayout>
 @property(strong, nonatomic) TLDataSource *datasource;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property(weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property(strong, nonatomic) RACSignal *photoScrollSignal;
 @end
 
@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.datasource = [[TLDataSource alloc]initWithItems:self.photos cellIdentifier:@"CELL" configureCellBlock:^(UICollectionViewCell *cell, ALAsset *item, id indexPath) {
+    self.datasource = [[TLDataSource alloc]initWithItems:self.photos cellIdentifier:@"CELL" configureCellBlock:^(UICollectionViewCell *cell, ALAsset *item, id indexPath) {
         cell.backgroundView = [[UIImageView alloc]initWithImage:[[UIImage alloc]initWithCGImage:item.thumbnail]];
     }];
     self.collectionView.dataSource = self.datasource;
@@ -33,10 +33,10 @@
     RACLargeDisplayViewController *largeVC = [RACLargeDisplayViewController new];
     largeVC.photoArray = self.datasource.items;
     largeVC.index = indexPath.row;
-    
+
     self.photoScrollSignal = largeVC.photoIndexSignal;
     [self.collectionView rac_liftSelector:@selector(scrollToItemAtIndexPath:atScrollPosition:animated:) withSignals:self.photoScrollSignal, [RACSignal return:@(UICollectionViewScrollPositionCenteredVertically)], [RACSignal return:@NO], nil];
-    
+
     [self.navigationController pushViewController:largeVC animated:YES];
 }
 

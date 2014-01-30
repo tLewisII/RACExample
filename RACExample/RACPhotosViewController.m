@@ -12,9 +12,9 @@
 #import "RACAlbumDisplayViewController.h"
 
 @interface RACPhotosViewController () <UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) TLDataSource *datasource;
-@property (strong, nonatomic) RACPhotoManager *photoManager;
+@property(weak, nonatomic) IBOutlet UITableView *tableView;
+@property(strong, nonatomic) TLDataSource *datasource;
+@property(strong, nonatomic) RACPhotoManager *photoManager;
 @end
 
 @implementation RACPhotosViewController
@@ -22,21 +22,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.photoManager = [RACPhotoManager new];
-    __strong typeof (UITableView *) strongTableView = self.tableView;
+    __strong typeof (self.tableView) strongTableView = self.tableView;
     strongTableView.delegate = self;
-    RAC(self, datasource) = [[[[[self.photoManager photoAlbums]collect] map:^id(NSArray *value) {
+    RAC(self, datasource) = [[[[[self.photoManager photoAlbums]collect]map:^id(NSArray *value) {
         CellConfigureBlock block = ^(UITableViewCell *cell, ALAssetsGroup *result, id indexPath) {
             cell.textLabel.text = [result valueForProperty:ALAssetsGroupPropertyName];
             cell.imageView.image = [UIImage imageWithCGImage:result.posterImage];
         };
-        
+
         TLDataSource *dataSource = [[TLDataSource alloc]initWithItems:value cellIdentifier:@"CELL" configureCellBlock:block];
         return dataSource;
     }]catchTo:[RACSignal empty]]doCompleted:^{
         [strongTableView reloadData];
     }];
-    
-    RAC(self.tableView, dataSource, nil) = RACObserve(self, datasource);
+
+    RAC(strongTableView, dataSource, nil) = RACObserve(self, datasource);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -44,7 +44,7 @@
     RACSignal *photosSignal = [[[self.photoManager photosFromGroup:group]deliverOn:[RACScheduler mainThreadScheduler]]collect];
     RACSignal *groupSignal = [RACSignal return:group];
     RACSignal *photosAndGroup = [RACSignal merge:@[photosSignal, groupSignal]];
-    RACSignal *segueSignal = [[photosAndGroup collect] map:^id(NSArray *value) {
+    RACSignal *segueSignal = [[photosAndGroup collect]map:^id(NSArray *value) {
         return [RACTuple tupleWithObjectsFromArray:value];
     }];
     [self rac_liftSelector:@selector(performSegueWithIdentifier:sender:)
@@ -53,7 +53,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(RACTuple *)sender {
     RACTupleUnpack(ALAssetsGroup *group, NSArray *photos) = sender;
-    
+
     RACAlbumDisplayViewController *albumVC = (RACAlbumDisplayViewController *)segue.destinationViewController;
     albumVC.title = [group valueForProperty:ALAssetsGroupPropertyName];
     albumVC.group = group;

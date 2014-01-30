@@ -8,7 +8,7 @@ build/*
 *.mode1v3
 xcuserdata
 Snapshots
-
+*.idea
 # osx noise
 .DS_Store
 
