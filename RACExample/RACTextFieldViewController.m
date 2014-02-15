@@ -52,10 +52,10 @@
     RAC(self.passwordIndicator, image) = [passwordSignal map:block];
 
     ///Only enable the create account button when each field is filled out correctly.
-    RACSignal *correctnessSignal = [RACSignal combineLatest:@[nameSignal, emailSignal,
-                                                              passwordSignal] reduce:^(NSNumber *name, NSNumber *email, NSNumber *password) {
-        return @((name.boolValue && email.boolValue && password.boolValue));
-    }];
+    RACSignal *correctnessSignal = [RACSignal combineLatest:@[nameSignal, emailSignal, passwordSignal]
+                                                     reduce:^(NSNumber *name, NSNumber *email, NSNumber *password) {
+                                                         return @((name.boolValue && email.boolValue && password.boolValue));
+                                                     }];
     ///A RACCommand is used for buttons in place of adding target actions. In this case, we only want the command to be able to execute if the correctnessSignal returns true.
     ///Here we return a signal block that executes a network request on a background thread. We send an error if there is an error, or the image and `complete` if it is successful.
     RACCommand *command = [[RACCommand alloc] initWithEnabled:correctnessSignal signalBlock:^RACSignal *(id input) {
