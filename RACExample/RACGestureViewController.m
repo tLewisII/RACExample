@@ -52,11 +52,18 @@
                 break;
             default:
                 break;
+            case UIGestureRecognizerStatePossible:
+                break;
+            case UIGestureRecognizerStateCancelled:
+                break;
+            case UIGestureRecognizerStateFailed:
+                break;
         }
         return state;
     }];
     ///We want a different color to represent the state of the gesture, so we use the states as keys.
-    NSDictionary *colors = @{@(UIGestureRecognizerStateEnded) : [UIColor blueColor], @(UIGestureRecognizerStateChanged) : [UIColor purpleColor]};
+    NSDictionary *colors = @{@(UIGestureRecognizerStateEnded)   : [UIColor blueColor],
+                             @(UIGestureRecognizerStateChanged) : [UIColor purpleColor]};
     ///Here we filter the values, and only return a color from our dictionary when the state is one of the ones we care about.
     RACSignal *colorSignal = [[panGesture.rac_gestureSignal filter:^BOOL(UIPanGestureRecognizer *recognizer) {
         return (recognizer.state == UIGestureRecognizerStateChanged || recognizer.state == UIGestureRecognizerStateEnded);
@@ -65,7 +72,7 @@
     }];
     ///We want the starting point displayed when the view loads.
     NSString *initialPoint = [NSString stringWithFormat:@"Y Translation = %f", originalCenter.y];
-    ///+[RACSignal merge] takes an array of signals and returns a value each time one of the signals fires. Here the initialPoint immediatly returns, thus the label is set when the view loads. Then afterwards, the panGestureSignal will be sending its values when it is activated.
+    ///+[RACSignal merge] takes an array of signals and returns a value each time one of the signals fires. Here the initialPoint immediately returns, thus the label is set when the view loads. Then afterwards, the panGestureSignal will be sending its values when it is activated.
     RAC(self.translationLabel, text) = [RACSignal merge:@[panGestureString, [RACSignal return:initialPoint]]];
     ///The label will always reflect the current state of the recognizer.
     RAC(self.stateLabel, text) = panGestureState;

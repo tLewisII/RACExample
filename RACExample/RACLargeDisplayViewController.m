@@ -46,7 +46,7 @@
     if(index >= 0 && index < self.photoArray.count) {
         ALAsset *object = self.photoArray[(NSUInteger)index];
         UIImage *image = [UIImage imageWithCGImage:object.defaultRepresentation.fullScreenImage];
-        RACSinglePhotoViewController *photoViewController = [[RACSinglePhotoViewController alloc]initWithImage:image index:index];
+        RACSinglePhotoViewController *photoViewController = [[RACSinglePhotoViewController alloc] initWithImage:image index:(NSUInteger)index];
         return photoViewController;
     }
 

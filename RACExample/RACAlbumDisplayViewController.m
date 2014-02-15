@@ -32,10 +32,16 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     RACLargeDisplayViewController *largeVC = [RACLargeDisplayViewController new];
     largeVC.photoArray = self.datasource.items;
-    largeVC.index = indexPath.row;
+    largeVC.index = (NSUInteger)indexPath.row;
 
+    /// Here, instead of a delegate that handles scrolling the collectionView to the appropriate cell,
+    /// we get a signal from RACLargeDisplayViewController that sends the index path that we should scroll to.
+    /// Then we lift scrollToItemAtIndexPath:atScrollPosition:animated: with the provided signal, as well as the
+    /// position and the animation parameter. Every time the signal sends a value, the collectionView will scroll to the
+    /// given indexPath.
     self.photoScrollSignal = largeVC.photoIndexSignal;
-    [self.collectionView rac_liftSelector:@selector(scrollToItemAtIndexPath:atScrollPosition:animated:) withSignals:self.photoScrollSignal, [RACSignal return:@(UICollectionViewScrollPositionCenteredVertically)], [RACSignal return:@NO], nil];
+    [self.collectionView rac_liftSelector:@selector(scrollToItemAtIndexPath:atScrollPosition:animated:)
+                              withSignals:self.photoScrollSignal, [RACSignal return:@(UICollectionViewScrollPositionCenteredVertically)], [RACSignal return:@NO], nil];
 
     [self.navigationController pushViewController:largeVC animated:YES];
 }

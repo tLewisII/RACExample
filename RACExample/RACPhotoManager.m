@@ -24,9 +24,7 @@
 - (RACSignal *)photoAlbums {
     return [RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
         [self.library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-            if(group) {
-                [subscriber sendNext:group];
-            }
+            if(group) [subscriber sendNext:group];
             else [subscriber sendCompleted];
         }                         failureBlock:^(NSError *error) {
             [subscriber sendError:error];
@@ -40,9 +38,7 @@
         ALAssetsFilter *filter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:filter];
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            if(result) {
-                [subscriber sendNext:result];
-            }
+            if(result) [subscriber sendNext:result];
             else [subscriber sendCompleted];
         }];
         return nil;
