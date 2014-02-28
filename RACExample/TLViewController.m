@@ -8,7 +8,6 @@
 
 #import "TLViewController.h"
 #import "TLDataSource.h"
-
 @interface TLViewController () <UITableViewDelegate>
 @property(strong, nonatomic) UITableView *tableView;
 @property(strong, nonatomic) TLDataSource *datasource;
@@ -25,7 +24,7 @@
     CellConfigureBlock block = ^(UITableViewCell *cell, NSString *item, id indexPath) {
         cell.textLabel.text = item;
     };
-    self.datasource = [[TLDataSource alloc]initWithItems:@[@"Gestures", @"Text Fields", @"Slideshow", @"Photo Library"]
+    self.datasource = [[TLDataSource alloc]initWithItems:@[@"Gestures", @"Imperative Text Fields", @"Text Fields", @"Slideshow", @"Photo Library"]
                                           cellIdentifier:@"Cell"
                                       configureCellBlock:block];
     self.tableView.dataSource = self.datasource;

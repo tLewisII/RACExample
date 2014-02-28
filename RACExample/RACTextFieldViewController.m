@@ -92,7 +92,7 @@
 
     ///Here we bind the imageView's image property to the signal sent from the command. We flatten it because `executionSignals` is a signal of signals, and flattening is the same as merging, so we get one signal that represents the value of all of the signals. Note the delivery on the main thread.
     RAC(self.imageView, image) = [[[command executionSignals] flatten] deliverOn:[RACScheduler mainThreadScheduler]];
-    ///The activityIndicator will be spin while the command is being executed.
+    ///The activityIndicator will spin while the command is being executed.
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] init];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicatorView];
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
