@@ -20,6 +20,7 @@
                         <segue destination="XLl-eH-SmF" kind="push" identifier="Text Fields" id="gVM-OU-RVz"/>
                         <segue destination="bhb-nt-ymV" kind="push" identifier="Slideshow" id="JpU-gP-EOf"/>
                         <segue destination="Gv4-iS-ZwO" kind="push" identifier="Photo Library" id="XY3-l1-9QH"/>
+                        <segue destination="3cx-xf-BdS" kind="push" identifier="Imperative Text Fields" id="HVL-KE-ODJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -197,6 +198,98 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RaN-a5-Uwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1043" y="-593"/>
+        </scene>
+        <!--Text Field View Controller-->
+        <scene sceneID="dqe-NQ-0MX">
+            <objects>
+                <viewController id="3cx-xf-BdS" customClass="IMPTextFieldViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="19F-UE-7L1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="S87-8q-oc4">
+                                <rect key="frame" x="103" y="84" width="150" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="vSE-Xi-XlA">
+                                <rect key="frame" x="103" y="122" width="150" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="TCY-vO-AHE">
+                                <rect key="frame" x="103" y="160" width="150" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kZv-jU-jC7">
+                                <rect key="frame" x="49" y="88" width="46" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pzq-jB-nIe">
+                                <rect key="frame" x="52" y="126" width="43" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Password" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aI4-5R-39C">
+                                <rect key="frame" x="0.0" y="164" width="95" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="ItG-Rb-6oa">
+                                <rect key="frame" x="270" y="84" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="23k-Jc-nki">
+                                <rect key="frame" x="270" y="122" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="UQe-2U-Tu2">
+                                <rect key="frame" x="270" y="160" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="D47-V8-GFn">
+                                <rect key="frame" x="111" y="198" width="135" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Create Account">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="kbW-ut-RJP">
+                                <rect key="frame" x="0.0" y="249" width="320" height="319"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ruZ-ue-we6"/>
+                    <connections>
+                        <outlet property="createAccountButton" destination="D47-V8-GFn" id="cph-vg-UFw"/>
+                        <outlet property="emailField" destination="vSE-Xi-XlA" id="5i4-j8-QH3"/>
+                        <outlet property="emailIndicator" destination="23k-Jc-nki" id="paX-zA-2Fy"/>
+                        <outlet property="imageView" destination="kbW-ut-RJP" id="Akm-6B-ccY"/>
+                        <outlet property="nameField" destination="S87-8q-oc4" id="wuL-9q-JKB"/>
+                        <outlet property="nameIndicator" destination="ItG-Rb-6oa" id="B4D-2Y-Zor"/>
+                        <outlet property="passwordField" destination="TCY-vO-AHE" id="2HC-3C-szk"/>
+                        <outlet property="passwordIndicator" destination="UQe-2U-Tu2" id="qXZ-fX-uUT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tzl-tz-7tn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1466" y="-593"/>
         </scene>
         <!--Gesture View Controller-->
         <scene sceneID="a50-Yz-eds">

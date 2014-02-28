@@ -15,6 +15,7 @@
 		DB7BDDD3188AFEF6007090C0 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB7BDDD2188AFEF6007090C0 /* AssetsLibrary.framework */; };
 		DB7BDDD7188AFFF8007090C0 /* RACPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */; };
 		DB7BDDDD188B04F5007090C0 /* RACAlbumDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */; };
+		DB9B550C18C143410045F5D4 /* IMPTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9B550B18C143410045F5D4 /* IMPTextFieldViewController.m */; };
 		DBBA69C41793575E00DC0101 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C31793575E00DC0101 /* UIKit.framework */; };
 		DBBA69C61793575E00DC0101 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C51793575E00DC0101 /* Foundation.framework */; };
 		DBBA69C81793575E00DC0101 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBA69C71793575E00DC0101 /* CoreGraphics.framework */; };
@@ -52,6 +53,8 @@
 		DB7BDDD6188AFFF8007090C0 /* RACPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACPhotosViewController.m; sourceTree = "<group>"; };
 		DB7BDDDB188B04F5007090C0 /* RACAlbumDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACAlbumDisplayViewController.h; sourceTree = "<group>"; };
 		DB7BDDDC188B04F5007090C0 /* RACAlbumDisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACAlbumDisplayViewController.m; sourceTree = "<group>"; };
+		DB9B550A18C143410045F5D4 /* IMPTextFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPTextFieldViewController.h; sourceTree = "<group>"; };
+		DB9B550B18C143410045F5D4 /* IMPTextFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMPTextFieldViewController.m; sourceTree = "<group>"; };
 		DBBA69C01793575E00DC0101 /* RACExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RACExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBBA69C31793575E00DC0101 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DBBA69C51793575E00DC0101 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -199,6 +202,8 @@
 			children = (
 				DBBA69F41793856B00DC0101 /* RACTextFieldViewController.h */,
 				DBBA69F51793856B00DC0101 /* RACTextFieldViewController.m */,
+				DB9B550A18C143410045F5D4 /* IMPTextFieldViewController.h */,
+				DB9B550B18C143410045F5D4 /* IMPTextFieldViewController.m */,
 			);
 			name = "Text Fields";
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				DB7BDDD1188AFE67007090C0 /* RACPhotoManager.m in Sources */,
 				DBBA69D41793575E00DC0101 /* TLAppDelegate.m in Sources */,
 				DBBA69E01793575E00DC0101 /* TLViewController.m in Sources */,
+				DB9B550C18C143410045F5D4 /* IMPTextFieldViewController.m in Sources */,
 				DB56E4E6188D6BC000681B2C /* RACLargeDisplayViewController.m in Sources */,
 				DBBA69E81793647000DC0101 /* RACGestureViewController.m in Sources */,
 				DBBA69EC1793658C00DC0101 /* TLDataSource.m in Sources */,
