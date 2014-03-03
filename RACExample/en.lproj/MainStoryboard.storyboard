@@ -21,6 +21,7 @@
                         <segue destination="bhb-nt-ymV" kind="push" identifier="Slideshow" id="JpU-gP-EOf"/>
                         <segue destination="Gv4-iS-ZwO" kind="push" identifier="Photo Library" id="XY3-l1-9QH"/>
                         <segue destination="3cx-xf-BdS" kind="push" identifier="Imperative Text Fields" id="HVL-KE-ODJ"/>
+                        <segue destination="TRK-DE-Say" kind="push" identifier="Imperative Gestures" id="NdI-Bj-wg8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -360,6 +361,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c4x-tv-3fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1043" y="778"/>
+        </scene>
+        <!--Gestures View Controller-->
+        <scene sceneID="eVH-gn-T24">
+            <objects>
+                <viewController id="TRK-DE-Say" customClass="IMPGesturesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wXd-lk-lt3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pan Gesture Y Translation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nhd-zj-QvY">
+                                <rect key="frame" x="20" y="302" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pan Gesture State" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Rb-iS-VpB">
+                                <rect key="frame" x="20" y="273" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pinch Scale and Velocity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Rh7-WQ-a8I">
+                                <rect key="frame" x="20" y="244" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="cKF-kp-12e"/>
+                    <connections>
+                        <outlet property="pinchLabel" destination="Rh7-WQ-a8I" id="eni-tr-ZJ0"/>
+                        <outlet property="stateLabel" destination="3Rb-iS-VpB" id="VmZ-CI-aq6"/>
+                        <outlet property="translationLabel" destination="nhd-zj-QvY" id="J80-rQ-Sc2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HKb-UZ-KT7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1541" y="92"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Q4f-ub-hyg">
